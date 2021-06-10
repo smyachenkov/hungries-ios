@@ -87,7 +87,7 @@ struct ContentView: View {
                 let imageData = loadImage(photoUrl: place?.photoUrl)
                 
                 if !placesListModel.isLoaded {
-                    LoadingProgressCard()
+                    LoadingCardView()
                 } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
                     LastCardView(
                         reloadAction: {
@@ -102,6 +102,7 @@ struct ContentView: View {
                         place: place!,
                         imageData: imageData,
                         onAction: {
+                            // todo process rate for swipes
                             self.placesListModel.nextPlace()
                         }
                     )
@@ -113,6 +114,8 @@ struct ContentView: View {
         
         HStack {
                 Button("❌") {
+                    let place = placesListModel.getCurrentPlace()!
+                    self.placesListModel.ratePlace(placeId: place.id!, rate: false)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
@@ -166,6 +169,8 @@ struct ContentView: View {
                 }
             
                 Button("✅") {
+                    let place = placesListModel.getCurrentPlace()!
+                    self.placesListModel.ratePlace(placeId: place.id!, rate: true)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)

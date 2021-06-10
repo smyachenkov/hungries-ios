@@ -13,8 +13,10 @@ struct PlacesResponse : Decodable {
 }
 
 struct Place: Decodable {
+    let id : Int?
     let name : String?
     let url : String?
     let distance : Int?
     let photoUrl : String?
+    let isLiked : Bool?
 }

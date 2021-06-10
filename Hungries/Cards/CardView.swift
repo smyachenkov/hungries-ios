@@ -66,26 +66,51 @@ struct CardView: View {
                         .rotationEffect(Angle.degrees(45))
                 }
                 VStack(alignment: .leading) {
-                    VStack() {
-                        if (self.imageData != nil) {
-                            Image(uiImage: UIImage(data: self.imageData!)!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
+                    ZStack {
+                        VStack {
+                            if (self.imageData != nil) {
+                                Image(uiImage: UIImage(data: self.imageData!)!)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
+                            
+                            Text(self.place.name!)
+                                .frame(width: geometry.size.width)
+                            
+                            HStack {
+                                Text("Distance: \(self.place.distance!)m")
+                                    .foregroundColor(Color.black)
+                                    .padding()
+                                Link(destination: URL(string: self.place.url!)!,
+                                     label: {
+                                        Text("Open in maps").underline()
+                                     }).padding()
+                            }.frame(width: geometry.size.width)
                         }
-                        
-                        Text(self.place.name!)
-                            .frame(width: geometry.size.width)
-                        
-                        HStack {
-                            Text("Distance: \(self.place.distance!)m")
-                                .foregroundColor(Color.black)
-                                .padding()
-                            Link(destination: URL(string: self.place.url!)!,
-                                 label: {
-                                    Text("Open in maps").underline()
-                                 }).padding()
-                        }.frame(width: geometry.size.width)
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Spacer()
+                                // todo replace with hand.thumbsup.circle
+                                if (self.place.isLiked != nil) {
+                                    if (self.place.isLiked!) {
+                                        Image(systemName: "hand.thumbsup.fill")
+                                            .foregroundColor(.green)
+                                            .font(.system(size: 32))
+                                            .padding(20)
+                                    } else {
+                                        Image(systemName: "hand.thumbsdown.fill")
+                                            .foregroundColor(.red)
+                                            .font(.system(size: 32))
+                                            .padding(20)
+                                    }
+                                }
+                            }
+                            Spacer()
+                        }
                     }
+                   
+                    
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)

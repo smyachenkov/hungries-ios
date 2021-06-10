@@ -73,11 +73,38 @@ class PlacesListModel: ObservableObject {
         }
     }
     
+    // todo: common parts in one place, async call, error handle
+    public func ratePlace(placeId: Int, rate: Bool) {
+        let urlString = "https://hungries-api.herokuapp.com/place/\(placeId)/like/\(deviceId)/\(rate.description)"
+        let urlComps = URLComponents(string: urlString)!
+        guard let url = URL(string: urlComps.url!.absoluteString) else {
+            print("Invalid URL")
+            return
+        }
+        var request = URLRequest(url: url)
+        
+        let toEncode = "\(apiUserName):\(apiPassword)"
+        let encoded = toEncode.data(using: .utf8)?.base64EncodedString()
+        request.addValue("Basic \(encoded!)", forHTTPHeaderField: "Authorization")
+        request.httpMethod = "POST"
+        URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+            guard data != nil else {
+                return
+            }
+            do {
+            } catch {
+                print(error)
+            }
+        }).resume()
+    }
+    
+    
     private func getPlaces(nextPageToken: String?,
                            lat: CLLocationDegrees, lng: CLLocationDegrees,
                            _ completion: @escaping (PlacesResponse?) -> ()) {
         var urlComps = URLComponents(string: "https://hungries-api.herokuapp.com/places")!
         urlComps.queryItems = [URLQueryItem(name: "radius", value: "500"),
+                               URLQueryItem(name: "device", value: deviceId),
                                URLQueryItem(name: "coordinates", value: String(lat) + "," + String(lng)),]
         if (nextPageToken != nil) {
             urlComps.queryItems?.append(URLQueryItem(name: "pagetoken", value: nextPageToken!))

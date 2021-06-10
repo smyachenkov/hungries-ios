@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D6127CC726725C92004C03B0 /* LoadingProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6127CC626725C92004C03B0 /* LoadingProgressCard.swift */; };
+		D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6127CC626725C92004C03B0 /* LoadingCardView.swift */; };
 		D6C53FB32670B41B001FB93F /* HungriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB22670B41B001FB93F /* HungriesApp.swift */; };
 		D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB42670B41B001FB93F /* ContentView.swift */; };
 		D6C53FB72670B41D001FB93F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C53FB62670B41D001FB93F /* Assets.xcassets */; };
@@ -47,7 +47,7 @@
 		A85C3B677876D79A1206487E /* Pods-Hungries-HungriesUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hungries-HungriesUITests.debug.xcconfig"; path = "Target Support Files/Pods-Hungries-HungriesUITests/Pods-Hungries-HungriesUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		BB07D86D43A1C5667F8B1A13 /* Pods-Hungries.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hungries.debug.xcconfig"; path = "Target Support Files/Pods-Hungries/Pods-Hungries.debug.xcconfig"; sourceTree = "<group>"; };
 		C329F44CC09ACDF742797B2A /* Pods-HungriesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HungriesTests.release.xcconfig"; path = "Target Support Files/Pods-HungriesTests/Pods-HungriesTests.release.xcconfig"; sourceTree = "<group>"; };
-		D6127CC626725C92004C03B0 /* LoadingProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingProgressCard.swift; sourceTree = "<group>"; };
+		D6127CC626725C92004C03B0 /* LoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
 		D6C53FAF2670B41B001FB93F /* Hungries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hungries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C53FB22670B41B001FB93F /* HungriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HungriesApp.swift; sourceTree = "<group>"; };
 		D6C53FB42670B41B001FB93F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,6 +114,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		D6127CCB26727927004C03B0 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				D6C53FE02670B902001FB93F /* CardView.swift */,
+				D6C53FF82670BBBD001FB93F /* LastCardView.swift */,
+				D6127CC626725C92004C03B0 /* LoadingCardView.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
 		D6C53FA62670B41B001FB93F = {
 			isa = PBXGroup;
 			children = (
@@ -139,19 +149,17 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
+				D6127CCB26727927004C03B0 /* Cards */,
 				D6C53FF02670BAF6001FB93F /* Config.xcconfig */,
 				D6C53FB62670B41D001FB93F /* Assets.xcassets */,
 				D6C53FB42670B41B001FB93F /* ContentView.swift */,
 				D6C53FB22670B41B001FB93F /* HungriesApp.swift */,
 				D6C53FBB2670B41D001FB93F /* Info.plist */,
 				D6C53FB82670B41D001FB93F /* Preview Content */,
-				D6C53FE02670B902001FB93F /* CardView.swift */,
-				D6C53FF82670BBBD001FB93F /* LastCardView.swift */,
 				D6C53FFD2670BCE8001FB93F /* Location.swift */,
 				D6C540022670BCFB001FB93F /* Place.swift */,
 				D6C540072670BD08001FB93F /* PlacesListModel.swift */,
 				D6C5400C2670BD1D001FB93F /* UserSettings.swift */,
-				D6127CC626725C92004C03B0 /* LoadingProgressCard.swift */,
 			);
 			path = Hungries;
 			sourceTree = "<group>";
@@ -422,7 +430,7 @@
 			files = (
 				D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */,
 				D6C53FE12670B902001FB93F /* CardView.swift in Sources */,
-				D6127CC726725C92004C03B0 /* LoadingProgressCard.swift in Sources */,
+				D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */,
 				D6C53FFE2670BCE8001FB93F /* Location.swift in Sources */,
 				D6C540032670BCFB001FB93F /* Place.swift in Sources */,
 				D6C53FF92670BBBD001FB93F /* LastCardView.swift in Sources */,

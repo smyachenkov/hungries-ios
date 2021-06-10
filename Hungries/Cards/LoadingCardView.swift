@@ -1,5 +1,5 @@
 //
-//  LoadingProgressCard.swift
+//  LoadingCardView.swift
 //  Hungries
 //
 //  Created by Stanislav Miachenkov on 6/10/21.
@@ -14,7 +14,7 @@ import CoreLocation
 import GoogleMaps
 
 
-struct LoadingProgressCard: View {
+struct LoadingCardView: View {
 
     var body: some View {
         GeometryReader { geometry in
