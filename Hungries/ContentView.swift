@@ -86,7 +86,9 @@ struct ContentView: View {
                 let place = placesListModel.getCurrentPlace()
                 let imageData = loadImage(photoUrl: place?.photoUrl)
                 
-                if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
+                if !placesListModel.isLoaded {
+                    LoadingProgressCard()
+                } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
                     LastCardView(
                         reloadAction: {
                             self.placesListModel.fetchPlacesForNewLocation(
@@ -137,9 +139,12 @@ struct ContentView: View {
                             
                             GoogleMapsView(mapView: mapView)
 
-                            Text("📍")
-                            .frame(maxWidth: .infinity)
-                            .background(Color.clear)
+                            Image(systemName: "mappin")
+                                .foregroundColor(.red)
+                                .font(.system(size: 32))
+                            //Text("📍")
+                            //.frame(maxWidth: .infinity)
+                            //.background(Color.clear)
         
                         }
                         Button("Use this location") {

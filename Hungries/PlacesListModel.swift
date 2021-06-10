@@ -19,6 +19,8 @@ class PlacesListModel: ObservableObject {
     
     @Published var hasNextPage = false
     
+    @Published var isLoaded = false
+    
     var loc = location
 
     var nextPageToken: String?
@@ -56,6 +58,7 @@ class PlacesListModel: ObservableObject {
     }
     
     public func fetchPlaces(nextPageToken: String?, lat: CLLocationDegrees, lng: CLLocationDegrees) {
+        self.isLoaded = false
         getPlaces(nextPageToken: nextPageToken, lat: lat, lng: lng) { response in
             DispatchQueue.main.async {
                 if let response = response {
@@ -65,6 +68,7 @@ class PlacesListModel: ObservableObject {
                         self.places.append(p)
                     }
                 }
+                self.isLoaded = true
             }
         }
     }
