@@ -150,21 +150,22 @@ struct ContentView: View {
                             //.background(Color.clear)
         
                         }
-                        Button("Use this location") {
+                        Button(action: {
                             let selectedLat = mapView.projection.coordinate(for: mapView.center).latitude
                             let selectedLng = mapView.projection.coordinate(for: mapView.center).longitude
                             loc.selectNewLocation(newLocation: CLLocation.init(latitude: selectedLat, longitude: selectedLng))
                             self.placesListModel.fetchPlacesForNewLocation(lat: selectedLat, lng: selectedLng)
                             self.showMapsPicker.toggle()
-                        }.font( .system(size: 18, weight: .heavy, design: .default))
-                        .padding()
-                        .background(Color.clear)
-                        .cornerRadius(10)
-                        .foregroundColor(Color.blue)
-                        .overlay(
+                        }) {
+                            HStack {
+                                Image(systemName: "location")
+                                Text("Use this location")
+                            }.padding(10)
+                        }.overlay(
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue, lineWidth: 5.0)
-                        )
+                                .stroke(Color.blue, lineWidth: 2.0)
+                        ).font( .system(size: 14))
+                        .padding(3)
                     }
                 }
             
