@@ -32,11 +32,15 @@ struct ContentView: View {
     
     @ObservedObject var placesListModel = PlacesListModel()
 
+    //@ObservedObject var likedPlacesListModel = LikedPlacesListModel()
+    
     @ObservedObject var loc = location
     
     @State private var showMapsPicker = false
     
     @State private var showUserSettigns = false
+    
+    //@State private var showLikedList = false
     
     @StateObject var settings = UserSettings()
     
@@ -55,12 +59,29 @@ struct ContentView: View {
     var body: some View {
 
         HStack {
-            
+            /*
             // saved
             Button("🔖") {
+                self.showLikedList.toggle()
+                self.likedPlacesListModel.fetchLikedPlaces(
+                    lat: loc.selectedLocation!.coordinate.latitude,
+                    lng: loc.selectedLocation!.coordinate.longitude
+                )
             }.font(.title)
             .frame(maxWidth: .infinity)
             .background(Color.white)
+            .sheet(isPresented: $showLikedList) {
+                ScrollView(.vertical) {
+                    //VStack(spacing: 10) {
+                    //https://stackoverflow.com/questions/60009646/mysterious-spacing-or-padding-in-elements-in-a-vstack-in-a-scrollview-in-swiftui
+                    VStack(spacing: 0) {
+                        ForEach(0 ..< self.likedPlacesListModel.places.count, id: \.self) { i in
+                            LikedPlaceRow(place: self.likedPlacesListModel.places[i])
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
         
             // settings
             Button("⚙️") {
@@ -77,7 +98,7 @@ struct ContentView: View {
                         Text("\(Int(settings.radius)) was \(radiusBefore)")
                     }
                 }.padding()
-            }
+            }*/
 
         }
           
@@ -145,9 +166,6 @@ struct ContentView: View {
                             Image(systemName: "mappin")
                                 .foregroundColor(.red)
                                 .font(.system(size: 32))
-                            //Text("📍")
-                            //.frame(maxWidth: .infinity)
-                            //.background(Color.clear)
         
                         }
                         Button(action: {

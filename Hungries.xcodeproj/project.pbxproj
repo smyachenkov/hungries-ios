@@ -21,6 +21,8 @@
 		D6C540032670BCFB001FB93F /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C540022670BCFB001FB93F /* Place.swift */; };
 		D6C540082670BD08001FB93F /* PlacesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C540072670BD08001FB93F /* PlacesListModel.swift */; };
 		D6C5400D2670BD1D001FB93F /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C5400C2670BD1D001FB93F /* UserSettings.swift */; };
+		D6CDB7B92677A449004393A3 /* LikedPlacesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CDB7B82677A449004393A3 /* LikedPlacesListModel.swift */; };
+		D6CDB7D52678A2A0004393A3 /* LikedPlaceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CDB7D42678A2A0004393A3 /* LikedPlaceRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,8 @@
 		D6C540022670BCFB001FB93F /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		D6C540072670BD08001FB93F /* PlacesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListModel.swift; sourceTree = "<group>"; };
 		D6C5400C2670BD1D001FB93F /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		D6CDB7B82677A449004393A3 /* LikedPlacesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlacesListModel.swift; sourceTree = "<group>"; };
+		D6CDB7D42678A2A0004393A3 /* LikedPlaceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlaceRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +153,7 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
+				D6CDB7C526789FD0004393A3 /* LikedPlaces */,
 				D6127CCB26727927004C03B0 /* Cards */,
 				D6C53FF02670BAF6001FB93F /* Config.xcconfig */,
 				D6C53FB62670B41D001FB93F /* Assets.xcassets */,
@@ -188,6 +193,15 @@
 				D6C53FD12670B41D001FB93F /* Info.plist */,
 			);
 			path = HungriesUITests;
+			sourceTree = "<group>";
+		};
+		D6CDB7C526789FD0004393A3 /* LikedPlaces */ = {
+			isa = PBXGroup;
+			children = (
+				D6CDB7B82677A449004393A3 /* LikedPlacesListModel.swift */,
+				D6CDB7D42678A2A0004393A3 /* LikedPlaceRow.swift */,
+			);
+			path = LikedPlaces;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -431,9 +445,11 @@
 				D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */,
 				D6C53FE12670B902001FB93F /* CardView.swift in Sources */,
 				D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */,
+				D6CDB7D52678A2A0004393A3 /* LikedPlaceRow.swift in Sources */,
 				D6C53FFE2670BCE8001FB93F /* Location.swift in Sources */,
 				D6C540032670BCFB001FB93F /* Place.swift in Sources */,
 				D6C53FF92670BBBD001FB93F /* LastCardView.swift in Sources */,
+				D6CDB7B92677A449004393A3 /* LikedPlacesListModel.swift in Sources */,
 				D6C5400D2670BD1D001FB93F /* UserSettings.swift in Sources */,
 				D6C53FB32670B41B001FB93F /* HungriesApp.swift in Sources */,
 				D6C540082670BD08001FB93F /* PlacesListModel.swift in Sources */,

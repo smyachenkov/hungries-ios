@@ -10,13 +10,12 @@ import CoreLocation
 
 class PlacesListModel: ObservableObject {
     
-    
     let apiUserName = Bundle.main.infoDictionary!["HUNGRIES_API_USERNAME"] as! String
     
     let apiPassword = Bundle.main.infoDictionary!["HUNGRIES_API_PASSWORD"] as! String
     
     @Published var places = [Place]()
-    
+        
     @Published var hasNextPage = false
     
     @Published var isLoaded = false
