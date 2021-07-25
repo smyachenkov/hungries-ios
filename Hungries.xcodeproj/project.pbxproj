@@ -8,18 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6127CC626725C92004C03B0 /* LoadingCardView.swift */; };
-		D658391D26ADE75800812BC2 /* hungries_logo_pizza__120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391126ADE75700812BC2 /* hungries_logo_pizza__120x120.png */; };
-		D658391E26ADE75800812BC2 /* hungries_logo_pizza__40x40.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391226ADE75700812BC2 /* hungries_logo_pizza__40x40.png */; };
-		D658391F26ADE75800812BC2 /* hungries_logo_pizza__60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391326ADE75700812BC2 /* hungries_logo_pizza__60x60.png */; };
-		D658392026ADE75800812BC2 /* hungries_logo_pizza__180x180.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391426ADE75700812BC2 /* hungries_logo_pizza__180x180.png */; };
-		D658392126ADE75800812BC2 /* hungries_logo_pizza__80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391526ADE75700812BC2 /* hungries_logo_pizza__80x80.png */; };
-		D658392226ADE75800812BC2 /* hungries_logo_pizza__167x167.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391626ADE75700812BC2 /* hungries_logo_pizza__167x167.png */; };
-		D658392326ADE75800812BC2 /* hungries_logo_pizza__29x29.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391726ADE75700812BC2 /* hungries_logo_pizza__29x29.png */; };
-		D658392426ADE75800812BC2 /* hungries_logo_pizza__87x87.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391826ADE75700812BC2 /* hungries_logo_pizza__87x87.png */; };
-		D658392526ADE75800812BC2 /* hungries_logo_pizza__152x152.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391926ADE75700812BC2 /* hungries_logo_pizza__152x152.png */; };
-		D658392626ADE75800812BC2 /* hungries_logo_pizza__76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391A26ADE75700812BC2 /* hungries_logo_pizza__76x76.png */; };
-		D658392726ADE75800812BC2 /* hungries_logo_pizza__58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391B26ADE75800812BC2 /* hungries_logo_pizza__58x58.png */; };
-		D658392826ADE75800812BC2 /* hungries_logo_pizza__20x20.png in Resources */ = {isa = PBXBuildFile; fileRef = D658391C26ADE75800812BC2 /* hungries_logo_pizza__20x20.png */; };
 		D6C53FB32670B41B001FB93F /* HungriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB22670B41B001FB93F /* HungriesApp.swift */; };
 		D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB42670B41B001FB93F /* ContentView.swift */; };
 		D6C53FB72670B41D001FB93F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C53FB62670B41D001FB93F /* Assets.xcassets */; };
@@ -63,18 +51,6 @@
 		C329F44CC09ACDF742797B2A /* Pods-HungriesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HungriesTests.release.xcconfig"; path = "Target Support Files/Pods-HungriesTests/Pods-HungriesTests.release.xcconfig"; sourceTree = "<group>"; };
 		D6127CC626725C92004C03B0 /* LoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
 		D658390926A5C74000812BC2 /* Hungries.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hungries.entitlements; sourceTree = "<group>"; };
-		D658391126ADE75700812BC2 /* hungries_logo_pizza__120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__120x120.png; sourceTree = "<group>"; };
-		D658391226ADE75700812BC2 /* hungries_logo_pizza__40x40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__40x40.png; sourceTree = "<group>"; };
-		D658391326ADE75700812BC2 /* hungries_logo_pizza__60x60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__60x60.png; sourceTree = "<group>"; };
-		D658391426ADE75700812BC2 /* hungries_logo_pizza__180x180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__180x180.png; sourceTree = "<group>"; };
-		D658391526ADE75700812BC2 /* hungries_logo_pizza__80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__80x80.png; sourceTree = "<group>"; };
-		D658391626ADE75700812BC2 /* hungries_logo_pizza__167x167.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__167x167.png; sourceTree = "<group>"; };
-		D658391726ADE75700812BC2 /* hungries_logo_pizza__29x29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__29x29.png; sourceTree = "<group>"; };
-		D658391826ADE75700812BC2 /* hungries_logo_pizza__87x87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__87x87.png; sourceTree = "<group>"; };
-		D658391926ADE75700812BC2 /* hungries_logo_pizza__152x152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__152x152.png; sourceTree = "<group>"; };
-		D658391A26ADE75700812BC2 /* hungries_logo_pizza__76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__76x76.png; sourceTree = "<group>"; };
-		D658391B26ADE75800812BC2 /* hungries_logo_pizza__58x58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__58x58.png; sourceTree = "<group>"; };
-		D658391C26ADE75800812BC2 /* hungries_logo_pizza__20x20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hungries_logo_pizza__20x20.png; sourceTree = "<group>"; };
 		D6C53FAF2670B41B001FB93F /* Hungries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hungries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C53FB22670B41B001FB93F /* HungriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HungriesApp.swift; sourceTree = "<group>"; };
 		D6C53FB42670B41B001FB93F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -153,25 +129,6 @@
 			path = Cards;
 			sourceTree = "<group>";
 		};
-		D658391026ADE70500812BC2 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				D658391C26ADE75800812BC2 /* hungries_logo_pizza__20x20.png */,
-				D658391726ADE75700812BC2 /* hungries_logo_pizza__29x29.png */,
-				D658391226ADE75700812BC2 /* hungries_logo_pizza__40x40.png */,
-				D658391B26ADE75800812BC2 /* hungries_logo_pizza__58x58.png */,
-				D658391326ADE75700812BC2 /* hungries_logo_pizza__60x60.png */,
-				D658391A26ADE75700812BC2 /* hungries_logo_pizza__76x76.png */,
-				D658391526ADE75700812BC2 /* hungries_logo_pizza__80x80.png */,
-				D658391826ADE75700812BC2 /* hungries_logo_pizza__87x87.png */,
-				D658391126ADE75700812BC2 /* hungries_logo_pizza__120x120.png */,
-				D658391926ADE75700812BC2 /* hungries_logo_pizza__152x152.png */,
-				D658391626ADE75700812BC2 /* hungries_logo_pizza__167x167.png */,
-				D658391426ADE75700812BC2 /* hungries_logo_pizza__180x180.png */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
 		D6C53FA62670B41B001FB93F = {
 			isa = PBXGroup;
 			children = (
@@ -197,7 +154,6 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
-				D658391026ADE70500812BC2 /* Assets */,
 				D658390926A5C74000812BC2 /* Hungries.entitlements */,
 				D6CDB7C526789FD0004393A3 /* LikedPlaces */,
 				D6127CCB26727927004C03B0 /* Cards */,
@@ -358,21 +314,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D658392026ADE75800812BC2 /* hungries_logo_pizza__180x180.png in Resources */,
-				D658392126ADE75800812BC2 /* hungries_logo_pizza__80x80.png in Resources */,
-				D658392526ADE75800812BC2 /* hungries_logo_pizza__152x152.png in Resources */,
 				D6C53FBA2670B41D001FB93F /* Preview Assets.xcassets in Resources */,
-				D658392626ADE75800812BC2 /* hungries_logo_pizza__76x76.png in Resources */,
-				D658392726ADE75800812BC2 /* hungries_logo_pizza__58x58.png in Resources */,
-				D658392326ADE75800812BC2 /* hungries_logo_pizza__29x29.png in Resources */,
 				D6C53FF12670BAF6001FB93F /* Config.xcconfig in Resources */,
-				D658391D26ADE75800812BC2 /* hungries_logo_pizza__120x120.png in Resources */,
-				D658392226ADE75800812BC2 /* hungries_logo_pizza__167x167.png in Resources */,
 				D6C53FB72670B41D001FB93F /* Assets.xcassets in Resources */,
-				D658392426ADE75800812BC2 /* hungries_logo_pizza__87x87.png in Resources */,
-				D658391E26ADE75800812BC2 /* hungries_logo_pizza__40x40.png in Resources */,
-				D658391F26ADE75800812BC2 /* hungries_logo_pizza__60x60.png in Resources */,
-				D658392826ADE75800812BC2 /* hungries_logo_pizza__20x20.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
