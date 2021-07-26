@@ -29,17 +29,28 @@ struct LastCardView: View {
         GeometryReader { geometry in
                 VStack(alignment: .leading) {
                     VStack() {
-                        Text("Can't find more!")
+                        Text("There are no more places here")
                             .frame(width: geometry.size.width)
                                             
                         // reset
-                        Button("Start againg 🔄") {
+                        Button(action: {
                             self.reloadAction()
-                        }.font(.title)
-                        .background(Color.white)
-                    }
+                        }) {
+                            HStack() {
+                                Text("Start againg")
+                                Image(systemName: "arrow.uturn.backward")
+                            }.padding(10)
+                        }.overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.blue, lineWidth: 2.0)
+                        ).font( .system(size: 24))
+                        
+                        // select new location
+                        // todo: implement
+                
+                    }.padding(20)
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 .padding(.bottom)
                 .background(Color.white)
                 .cornerRadius(10)
