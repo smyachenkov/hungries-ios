@@ -24,7 +24,6 @@ struct LoadingCardView: View {
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)
-                .background(Color.white)
                 .cornerRadius(10)
             }
     }

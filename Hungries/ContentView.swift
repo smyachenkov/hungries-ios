@@ -44,6 +44,8 @@ struct ContentView: View {
     
     @StateObject var settings = UserSettings()
     
+    @Environment(\.colorScheme) var colorScheme
+    
     func loadImage(photoUrl: String?) -> Data? {
         if (photoUrl == nil || photoUrl == "") {
             return nil
@@ -140,7 +142,6 @@ struct ContentView: View {
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
-                //.background(Color.pink)
                 .isHidden(placesListModel.places.isEmpty)
     
                 // change location
@@ -148,7 +149,6 @@ struct ContentView: View {
                     self.showMapsPicker.toggle()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
-                .background(Color.white)
                 .sheet(isPresented: $showMapsPicker) {
                     if (loc.lastLocation != nil) {
                         let mapView = GMSMapView.map(
@@ -193,10 +193,8 @@ struct ContentView: View {
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
-                //.background(Color.green)
                 .isHidden(placesListModel.places.isEmpty)
-                
-
+        
         }
     }
 }

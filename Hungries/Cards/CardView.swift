@@ -16,6 +16,8 @@ struct CardView: View {
     @State private var swipeStatus: LikeDislike = .none
 
     @EnvironmentObject var settings: UserSettings
+    
+    @Environment(\.colorScheme) var colorScheme
 
     private var place: Place
 
@@ -79,7 +81,6 @@ struct CardView: View {
                             
                             HStack {
                                 Text("Distance: \(self.place.distance!)m")
-                                    .foregroundColor(Color.black)
                                     .padding()
                                 Link(destination: URL(string: self.place.url!)!,
                                      label: {
@@ -114,7 +115,6 @@ struct CardView: View {
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)
-                .background(Color.white)
                 .cornerRadius(10)
                 .shadow(radius: 5)
                 .animation(.interactiveSpring())
@@ -142,7 +142,7 @@ struct CardView: View {
                 )
             }.background(
                 swipeStatus == .none ?
-                    Color.white : (swipeStatus == .like ? Color.green : Color.red)
+                    (colorScheme == .dark ? Color.black : Color.white) : (swipeStatus == .like ? Color.green : Color.red)
             )
         }
         
