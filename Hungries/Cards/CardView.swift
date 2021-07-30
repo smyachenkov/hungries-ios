@@ -24,16 +24,16 @@ struct CardView: View {
     private var imageData: Data?
 
     private var thresholdPercentage: CGFloat = 0.4
-    private var onAction: () -> Void
+    private var onSwipe: (Bool) -> Void
 
     private enum LikeDislike: Int {
         case like, dislike, none
     }
 
-    init(place: Place, imageData: Data?, onAction: @escaping () -> Void) {
+    init(place: Place, imageData: Data?, onSwipe: @escaping (Bool) -> Void) {
         self.place = place
         self.imageData = imageData
-        self.onAction = onAction
+        self.onSwipe = onSwipe
     }
 
     private func getGesturePercentage(_ geometry: GeometryProxy, from gesture: DragGesture.Value) -> CGFloat {
@@ -136,7 +136,7 @@ struct CardView: View {
                         }.onEnded { value in
                             self.translation = .zero
                             if abs(self.getGesturePercentage(geometry, from: value)) > self.thresholdPercentage {
-                                self.onAction()
+                                self.onSwipe(self.swipeStatus == .like)
                                 self.swipeStatus = .none
                             }
                         }

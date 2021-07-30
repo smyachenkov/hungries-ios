@@ -124,8 +124,10 @@ struct ContentView: View {
                     CardView(
                         place: place!,
                         imageData: imageData,
-                        onAction: {
-                            // todo process rate for swipes
+                        onSwipe: {
+                            (liked: Bool) -> ()  in
+                            let place = placesListModel.getCurrentPlace()!
+                            self.placesListModel.ratePlace(placeId: place.id!, rate: liked)
                             self.placesListModel.nextPlace()
                         }
                     )
