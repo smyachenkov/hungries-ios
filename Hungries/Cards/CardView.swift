@@ -115,6 +115,7 @@ struct CardView: View {
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)
+                .background(colorScheme == .dark ? Color.black : Color.white)
                 .cornerRadius(10)
                 .shadow(radius: 5)
                 .animation(.interactiveSpring())
