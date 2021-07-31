@@ -24,10 +24,10 @@ class LikedPlacesListModel: ObservableObject {
     
     public func fetchLikedPlaces(lat: CLLocationDegrees, lng: CLLocationDegrees) {
         self.isLoaded = false
+        self.places.removeAll()
         getLikedPlaces(lat: lat, lng: lng) { response in
             DispatchQueue.main.async {
                 if let response = response {
-                    self.places.removeAll()
                     response.places?.forEach { p in
                         self.places.append(p)
                     }

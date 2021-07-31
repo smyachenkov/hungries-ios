@@ -32,7 +32,7 @@ struct ContentView: View {
     
     @ObservedObject var placesListModel = PlacesListModel()
 
-    //@ObservedObject var likedPlacesListModel = LikedPlacesListModel()
+    @ObservedObject var likedPlacesListModel = LikedPlacesListModel()
     
     @ObservedObject var loc = location
     
@@ -40,7 +40,7 @@ struct ContentView: View {
     
     @State private var showUserSettigns = false
     
-    //@State private var showLikedList = false
+    @State private var showLikedList = false
     
     @StateObject var settings = UserSettings()
     
@@ -61,7 +61,7 @@ struct ContentView: View {
     var body: some View {
 
         HStack {
-            /*
+        
             // saved
             Button("🔖") {
                 self.showLikedList.toggle()
@@ -71,7 +71,6 @@ struct ContentView: View {
                 )
             }.font(.title)
             .frame(maxWidth: .infinity)
-            .background(Color.white)
             .sheet(isPresented: $showLikedList) {
                 ScrollView(.vertical) {
                     //VStack(spacing: 10) {
@@ -84,7 +83,7 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity)
                 }
             }
-        
+            /*
             // settings
             Button("⚙️") {
                 self.showUserSettigns.toggle()
