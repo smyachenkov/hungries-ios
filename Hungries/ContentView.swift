@@ -60,7 +60,7 @@ struct ContentView: View {
 
     var body: some View {
 
-        HStack {
+            HStack {
         
             // saved
             Button("🔖") {
@@ -72,16 +72,7 @@ struct ContentView: View {
             }.font(.title)
             .frame(maxWidth: .infinity)
             .sheet(isPresented: $showLikedList) {
-                ScrollView(.vertical) {
-                    //VStack(spacing: 10) {
-                    //https://stackoverflow.com/questions/60009646/mysterious-spacing-or-padding-in-elements-in-a-vstack-in-a-scrollview-in-swiftui
-                    VStack(spacing: 0) {
-                        ForEach(0 ..< self.likedPlacesListModel.places.count, id: \.self) { i in
-                            LikedPlaceRow(place: self.likedPlacesListModel.places[i])
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
+                LikedPlacesView(places: self.likedPlacesListModel.places)
             }
             /*
             // settings
