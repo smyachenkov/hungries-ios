@@ -30,6 +30,8 @@ struct LikedPlacesView: View {
     var sendRemoveAction: (Int) -> Void
         
     @State var showRemoveDialog = false
+    
+    @State var lastClickedPlaceId = -1
         
     @Environment(\.colorScheme) var colorScheme
     
@@ -49,8 +51,7 @@ struct LikedPlacesView: View {
                 //VStack(spacing: 10) {
                 //https://stackoverflow.com/questions/60009646/mysterious-spacing-or-padding-in-elements-in-a-vstack-in-a-scrollview-in-swiftui
                 VStack(spacing: 0) {
-                    ForEach(0 ..< self.places.data.count, id: \.self) { i in
-                        let place = self.places.data[i]
+                    ForEach(self.places.data, id: \.self) { place in
                         HStack {
                             // place info
                             HStack {
@@ -65,16 +66,19 @@ struct LikedPlacesView: View {
                             
                             Spacer()
                             
-                            // remove button
-                            Button("❌") {
+                            // remove liked place button
+                            Button(action: {
+                                lastClickedPlaceId = place.id!
                                 showRemoveDialog.toggle()
+                            }) {
+                                Text("❌")
                             }.alert(isPresented: $showRemoveDialog) {
                                 Alert(
                                     title: Text("Do you want to remove this place from liked?"),
                                     message: Text("You can like it again when you see it"),
                                     primaryButton: .destructive(Text("Remove")) {
-                                        self.places.deleteById(placeId: place.id!)
-                                        self.sendRemoveAction(place.id!)
+                                        self.places.deleteById(placeId: self.lastClickedPlaceId)
+                                        self.sendRemoveAction(self.lastClickedPlaceId)
                                     },
                                     secondaryButton: .cancel()
                                 )

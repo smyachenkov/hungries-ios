@@ -12,11 +12,21 @@ struct PlacesResponse : Decodable {
     let nextPageToken: String?
 }
 
-struct Place: Decodable {
+struct Place: Decodable, Hashable {
     let id : Int?
     let name : String?
     let url : String?
     let distance : Int?
     let photoUrl : String?
     let isLiked : Bool?
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(name)
+        hasher.combine(url)
+        hasher.combine(distance)
+        hasher.combine(photoUrl)
+        hasher.combine(isLiked)
+    }
 }
+

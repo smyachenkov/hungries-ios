@@ -28,7 +28,7 @@ struct LastCardView: View {
     var body: some View {
         GeometryReader { geometry in
                 VStack(alignment: .leading) {
-                    VStack() {
+                    VStack {
                         Text("There are no more places here")
                             .frame(width: geometry.size.width)
                                             
