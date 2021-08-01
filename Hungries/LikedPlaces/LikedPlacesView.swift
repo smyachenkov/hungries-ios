@@ -7,16 +7,35 @@
 import Foundation
 import SwiftUI
 
+class LikedList: ObservableObject {
+    
+    @Published var data: [Place] = [Place]()
+    
+    init(data: [Place]) {
+        self.data = data
+    }
+    
+    func deleteById(placeId: Int) {
+        self.data = data.filter { place in
+            return place.id != placeId
+        }
+    }
+    
+}
+
 struct LikedPlacesView: View {
     
-    var places = [Place]()
+    @ObservedObject var places: LikedList
+    
+    var sendRemoveAction: (Int) -> Void
         
     @State var showRemoveDialog = false
         
     @Environment(\.colorScheme) var colorScheme
-
-    init(places: [Place]) {
-        self.places = places
+    
+    init(places: [Place], sendRemoveAction: @escaping (Int) -> Void) {
+        self.places = LikedList(data: places)
+        self.sendRemoveAction = sendRemoveAction
     }
     
     var body: some View {
@@ -30,17 +49,18 @@ struct LikedPlacesView: View {
                 //VStack(spacing: 10) {
                 //https://stackoverflow.com/questions/60009646/mysterious-spacing-or-padding-in-elements-in-a-vstack-in-a-scrollview-in-swiftui
                 VStack(spacing: 0) {
-                    ForEach(0 ..< self.places.count, id: \.self) { i in
+                    ForEach(0 ..< self.places.data.count, id: \.self) { i in
+                        let place = self.places.data[i]
                         HStack {
                             // place info
                             HStack {
                                 Link(
-                                    destination: URL(string: places[i].url!)!,
+                                    destination: URL(string: place.url!)!,
                                     label: {
-                                        Text(places[i].name!).underline()
+                                        Text(place.name!).underline()
                                      })
                                 Spacer()
-                                Text("\(places[i].distance!)m")
+                                Text("\(place.distance!)m")
                             }
                             
                             Spacer()
@@ -53,15 +73,14 @@ struct LikedPlacesView: View {
                                     title: Text("Do you want to remove this place from liked?"),
                                     message: Text("You can like it again when you see it"),
                                     primaryButton: .destructive(Text("Remove")) {
-                                        // todo implement
-                                        // remove from places array here and send request to backend
+                                        self.places.deleteById(placeId: place.id!)
+                                        self.sendRemoveAction(place.id!)
                                     },
                                     secondaryButton: .cancel()
                                 )
                             }.padding(.horizontal, 10)
                         }.padding(.horizontal, 20)
                         .padding(.vertical, 10)
-                        
                         
                         Divider().padding(.horizontal, 10)
                     }
@@ -77,10 +96,16 @@ struct LikedPlacesView_Previews: PreviewProvider {
     static var previews: some View {
         let testPlaces = [
             Place(id: 1, name: "Dirty Coffee", url: "google.com", distance: 100, photoUrl: "", isLiked: true),
-            Place(id: 1, name: "Night Pizza", url: "google.com", distance: 200, photoUrl: "", isLiked: true)
+            Place(id: 2, name: "Night Pizza", url: "google.com", distance: 200, photoUrl: "", isLiked: true)
         ]
         ForEach(ColorScheme.allCases, id: \.self) {
-            LikedPlacesView(places: testPlaces).preferredColorScheme($0)
+            LikedPlacesView(
+                places: testPlaces,
+                sendRemoveAction: {
+                    (placeId: Int) -> ()  in
+                    print(placeId)
+                }
+            ).preferredColorScheme($0)
         }
     }
 }
