@@ -14,6 +14,7 @@ struct PlacesResponse : Decodable {
 
 struct Place: Decodable, Hashable {
     let id : Int?
+    let googlePlaceId : String?
     let name : String?
     let url : String?
     let distance : Int?
@@ -22,6 +23,7 @@ struct Place: Decodable, Hashable {
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(googlePlaceId)
         hasher.combine(name)
         hasher.combine(url)
         hasher.combine(distance)

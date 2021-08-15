@@ -99,8 +99,8 @@ struct LikedPlacesView_Previews: PreviewProvider {
     
     static var previews: some View {
         let testPlaces = [
-            Place(id: 1, name: "Dirty Coffee", url: "google.com", distance: 100, photoUrl: "", isLiked: true),
-            Place(id: 2, name: "Night Pizza", url: "google.com", distance: 200, photoUrl: "", isLiked: true)
+            Place(id: 1, googlePlaceId: "1", name: "Dirty Coffee", url: "google.com", distance: 100, photoUrl: "", isLiked: true),
+            Place(id: 2, googlePlaceId: "1",  name: "Night Pizza", url: "google.com", distance: 200, photoUrl: "", isLiked: true)
         ]
         ForEach(ColorScheme.allCases, id: \.self) {
             LikedPlacesView(

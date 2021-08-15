@@ -7,6 +7,7 @@ target 'Hungries' do
   
   # Pods for Hungries
   pod 'GoogleMaps', '5.0.0'
+  pod 'GooglePlaces', '5.0.0'
   target 'HungriesTests' do
     inherit! :search_paths
     # Pods for testing

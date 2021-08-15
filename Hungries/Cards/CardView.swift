@@ -9,37 +9,42 @@ import Foundation
 import SwiftUI
 import CoreLocation
 import GoogleMaps
+import GooglePlaces
 
 
 struct CardView: View {
     @State private var translation: CGSize = .zero
     @State private var swipeStatus: LikeDislike = .none
+    
+    @ObservedObject var imageLoader: ImageLoader
 
     @EnvironmentObject var settings: UserSettings
     
     @Environment(\.colorScheme) var colorScheme
 
     private var place: Place
-
-    private var imageData: Data?
-
+        
     private var thresholdPercentage: CGFloat = 0.4
+    
     private var onSwipe: (Bool) -> Void
 
     private enum LikeDislike: Int {
         case like, dislike, none
     }
 
-    init(place: Place, imageData: Data?, onSwipe: @escaping (Bool) -> Void) {
+    init(place: Place, onSwipe: @escaping (Bool) -> Void) {
         self.place = place
-        self.imageData = imageData
         self.onSwipe = onSwipe
+        self.imageLoader = ImageLoader(googlePlaceId: place.googlePlaceId)
+        // todo move to onAppear()
+        imageLoader.load()
     }
 
     private func getGesturePercentage(_ geometry: GeometryProxy, from gesture: DragGesture.Value) -> CGFloat {
         gesture.translation.width / geometry.size.width
     }
 
+    
     @ViewBuilder
     var body: some View {
         GeometryReader { geometry in
@@ -55,7 +60,9 @@ struct CardView: View {
                                 .stroke(Color.green, lineWidth: 5.0)
                         ).padding(20)
                         .rotationEffect(Angle.degrees(-45))
+                    
                     Spacer()
+                    
                     Text("SKIP")
                         .font(.headline)
                         .padding()
@@ -70,8 +77,8 @@ struct CardView: View {
                 VStack(alignment: .leading) {
                     ZStack {
                         VStack {
-                            if (self.imageData != nil) {
-                                Image(uiImage: UIImage(data: self.imageData!)!)
+                            if (self.imageLoader.image != nil) {
+                                Image(uiImage: self.imageLoader.image!)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                             }
@@ -90,8 +97,11 @@ struct CardView: View {
                         }
                         VStack {
                             HStack {
+                                
                                 Spacer()
+                                
                                 Spacer()
+                                
                                 // todo replace with hand.thumbsup.circle
                                 if (self.place.isLiked != nil) {
                                     if (self.place.isLiked!) {
@@ -146,6 +156,5 @@ struct CardView: View {
                     (colorScheme == .dark ? Color.black : Color.white) : (swipeStatus == .like ? Color.green : Color.red)
             )
         }
-        
     }
 }

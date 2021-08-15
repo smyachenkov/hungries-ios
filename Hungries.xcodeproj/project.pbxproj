@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6127CC626725C92004C03B0 /* LoadingCardView.swift */; };
 		D658396126B69B4200812BC2 /* LikedPlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D658396026B69B4200812BC2 /* LikedPlacesView.swift */; };
+		D660E4AB26C99A43002B9D29 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660E4AA26C99A43002B9D29 /* ImageLoader.swift */; };
 		D6C53FB32670B41B001FB93F /* HungriesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB22670B41B001FB93F /* HungriesApp.swift */; };
 		D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FB42670B41B001FB93F /* ContentView.swift */; };
 		D6C53FB72670B41D001FB93F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6C53FB62670B41D001FB93F /* Assets.xcassets */; };
@@ -52,6 +53,7 @@
 		D6127CC626725C92004C03B0 /* LoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
 		D658390926A5C74000812BC2 /* Hungries.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hungries.entitlements; sourceTree = "<group>"; };
 		D658396026B69B4200812BC2 /* LikedPlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlacesView.swift; sourceTree = "<group>"; };
+		D660E4AA26C99A43002B9D29 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		D6C53FAF2670B41B001FB93F /* Hungries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hungries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C53FB22670B41B001FB93F /* HungriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HungriesApp.swift; sourceTree = "<group>"; };
 		D6C53FB42670B41B001FB93F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				D6C53FE02670B902001FB93F /* CardView.swift */,
 				D6C53FF82670BBBD001FB93F /* LastCardView.swift */,
 				D6127CC626725C92004C03B0 /* LoadingCardView.swift */,
+				D660E4AA26C99A43002B9D29 /* ImageLoader.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 			files = (
 				D658396126B69B4200812BC2 /* LikedPlacesView.swift in Sources */,
 				D6C53FB52670B41B001FB93F /* ContentView.swift in Sources */,
+				D660E4AB26C99A43002B9D29 /* ImageLoader.swift in Sources */,
 				D6C53FE12670B902001FB93F /* CardView.swift in Sources */,
 				D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */,
 				D6C53FFE2670BCE8001FB93F /* Location.swift in Sources */,

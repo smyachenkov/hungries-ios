@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreLocation
 import GoogleMaps
+import GooglePlaces
 
 var location = Location()
 
@@ -27,7 +28,6 @@ struct GoogleMapsView: UIViewRepresentable {
 
 }
 
-
 struct ContentView: View {
     
     @ObservedObject var placesListModel = PlacesListModel()
@@ -45,18 +45,6 @@ struct ContentView: View {
     @StateObject var settings = UserSettings()
     
     @Environment(\.colorScheme) var colorScheme
-    
-    func loadImage(photoUrl: String?) -> Data? {
-        if (photoUrl == nil || photoUrl == "") {
-            return nil
-        }
-        do {
-            return try Data(contentsOf: URL(string: photoUrl!)!)
-        } catch {
-            print("Failed to load image from URL \(String(describing: photoUrl))" )
-            return nil
-        }
-    }
 
     var body: some View {
 
@@ -103,7 +91,6 @@ struct ContentView: View {
         VStack {
             if (loc.selectedLocation != nil) {
                 let place = placesListModel.getCurrentPlace()
-                let imageData = loadImage(photoUrl: place?.photoUrl)
                 
                 if !placesListModel.isLoaded {
                     LoadingCardView()
@@ -119,7 +106,6 @@ struct ContentView: View {
                 } else if place != nil {
                     CardView(
                         place: place!,
-                        imageData: imageData,
                         onSwipe: {
                             (liked: Bool) -> ()  in
                             let place = placesListModel.getCurrentPlace()!
