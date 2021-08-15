@@ -32,6 +32,10 @@ class ImageLoader: ObservableObject {
                     return
                   }
                 if let place = place {
+                    if (place.photos == nil || place.photos?.count == 0) {
+                        // todo make default placeholder for place without photo
+                        return
+                    }
                     let firstPhotoMetaData: GMSPlacePhotoMetadata = place.photos![0]
                     GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData, callback: { (photo, error) -> Void in
                         if let error = error {
