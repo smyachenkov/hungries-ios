@@ -15,11 +15,16 @@ class ImageLoader: ObservableObject {
     @Published var image: UIImage?
     
     private let googlePlaceId: String?
-
+    
+    private let maxSize = CGSize(
+        width: UIScreen.main.bounds.size.width,
+        height: UIScreen.main.bounds.size.height
+    )
+    
     init(googlePlaceId: String?) {
         self.googlePlaceId = googlePlaceId
     }
-
+    
     func load() {
         if (googlePlaceId != nil) {
             let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.photos.rawValue))
@@ -30,21 +35,24 @@ class ImageLoader: ObservableObject {
                 if let error = error {
                     print("Error requesting photos: \(error.localizedDescription)")
                     return
-                  }
+                }
                 if let place = place {
                     if (place.photos == nil || place.photos?.count == 0) {
                         // todo make default placeholder for place without photo
                         return
                     }
                     let firstPhotoMetaData: GMSPlacePhotoMetadata = place.photos![0]
-                    GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData, callback: { (photo, error) -> Void in
-                        if let error = error {
-                            print("Error loading photo metadata: \(error.localizedDescription)")
-                            return
-                        } else {
-                            self.image = photo
-                        }
-                    })
+                    GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData,
+                                                            constrainedTo: self.maxSize,
+                                                            scale: 1.0,
+                                                            callback: { (photo, error) -> Void in
+                                                                if let error = error {
+                                                                    print("Error loading photo metadata: \(error.localizedDescription)")
+                                                                    return
+                                                                } else {
+                                                                    self.image = photo
+                                                                }
+                                                            })
                 }
             }
         }
