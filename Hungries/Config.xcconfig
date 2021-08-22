@@ -8,7 +8,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-GMS_SERVICES_API_KEY = AIzaSyDDt_snbTN5o1jKVohu_kZfORu7vIUuKJA
+GMS_SERVICES_API_KEY = [GMS_API_KEY]
 
-HUNGRIES_API_USERNAME = hungries
-HUNGRIES_API_PASSWORD = das&DG8x&O2yehdxa
+HUNGRIES_API_USERNAME = [API_USERNAME]
+HUNGRIES_API_PASSWORD = [API_PASSWORD]
