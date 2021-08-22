@@ -10,8 +10,6 @@ import CoreLocation
 import GoogleMaps
 import GooglePlaces
 
-var location = Location()
-
 struct GoogleMapsView: UIViewRepresentable {
     
     var mapView: GMSMapView
@@ -22,20 +20,22 @@ struct GoogleMapsView: UIViewRepresentable {
         mapView.settings.zoomGestures = true
         return mapView
     }
-
+    
     func updateUIView(_ mapView: GMSMapView, context: Context) {
     }
-
+    
 }
 
 struct ContentView: View {
     
     @ObservedObject var placesListModel = PlacesListModel()
-
+    
     @ObservedObject var likedPlacesListModel = LikedPlacesListModel()
     
     @ObservedObject var loc = location
     
+    @ObservedObject var auth = authState
+        
     @State private var showMapsPicker = false
     
     @State private var showUserSettigns = false
@@ -45,81 +45,82 @@ struct ContentView: View {
     @StateObject var settings = UserSettings()
     
     @Environment(\.colorScheme) var colorScheme
-
+    
     var body: some View {
-
+        if !auth.authChecked {
+            AuthScreenView()
+        } else {
             HStack {
-        
-            // saved
-            Button("🔖") {
-                self.showLikedList.toggle()
-                self.likedPlacesListModel.fetchLikedPlaces(
-                    lat: loc.selectedLocation!.coordinate.latitude,
-                    lng: loc.selectedLocation!.coordinate.longitude
-                )
-            }.font(.title)
-            .frame(maxWidth: .infinity)
-            .sheet(isPresented: $showLikedList) {
-                LikedPlacesView(
-                    places: self.likedPlacesListModel.places,
-                    sendRemoveAction: {
-                        (placeId: Int) -> ()  in
-                        self.placesListModel.ratePlace(placeId: placeId, rate: false)
-                    }
-                )
-            }
-            /*
-            // settings
-            Button("⚙️") {
-                self.showUserSettigns.toggle()
-            }.font(.title)
-            .frame(maxWidth: .infinity)
-            .background(Color.white)
-            .sheet(isPresented: $showUserSettigns) {
-                VStack {
-                    HStack {
-                        let radiusBefore = Int(settings.radius)
-                        Text("Radius")
-                        Slider(value: $settings.radius, in: 100...1000)
-                        Text("\(Int(settings.radius)) was \(radiusBefore)")
-                    }
-                }.padding()
-            }*/
-
-        }
-          
-        VStack {
-            if (loc.selectedLocation != nil) {
-                let place = placesListModel.getCurrentPlace()
-                
-                if !placesListModel.isLoaded {
-                    LoadingCardView()
-                } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
-                    LastCardView(
-                        reloadAction: {
-                            self.placesListModel.fetchPlacesForNewLocation(
-                                lat: loc.selectedLocation!.coordinate.latitude,
-                                lng: loc.selectedLocation!.coordinate.longitude
-                            )
-                        }
+                // saved
+                Button("🔖") {
+                    self.showLikedList.toggle()
+                    self.likedPlacesListModel.fetchLikedPlaces(
+                        lat: loc.selectedLocation!.coordinate.latitude,
+                        lng: loc.selectedLocation!.coordinate.longitude
                     )
-                } else if place != nil {
-                    CardView(
-                        place: place!,
-                        onSwipe: {
-                            (liked: Bool) -> ()  in
-                            let place = placesListModel.getCurrentPlace()!
-                            self.placesListModel.ratePlace(placeId: place.id!, rate: liked)
-                            self.placesListModel.nextPlace()
+                }.font(.title)
+                .frame(maxWidth: .infinity)
+                .sheet(isPresented: $showLikedList) {
+                    LikedPlacesView(
+                        places: self.likedPlacesListModel.places,
+                        sendRemoveAction: {
+                            (placeId: Int) -> ()  in
+                            self.placesListModel.ratePlace(placeId: placeId, rate: false)
                         }
                     )
                 }
+                /*
+                // settings
+                Button("⚙️") {
+                    self.showUserSettigns.toggle()
+                }.font(.title)
+                .frame(maxWidth: .infinity)
+                .background(Color.white)
+                .sheet(isPresented: $showUserSettigns) {
+                    VStack {
+                        HStack {
+                            let radiusBefore = Int(settings.radius)
+                            Text("Radius")
+                            Slider(value: $settings.radius, in: 100...1000)
+                            Text("\(Int(settings.radius)) was \(radiusBefore)")
+                        }
+                    }.padding()
+                }*/
+
             }
-        }
-        
-        Spacer()
-        
-        HStack {
+            
+            VStack {
+                if (loc.selectedLocation != nil) {
+                    let place = placesListModel.getCurrentPlace()
+                    
+                    if !placesListModel.isLoaded {
+                        LoadingCardView()
+                    } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
+                        LastCardView(
+                            reloadAction: {
+                                self.placesListModel.fetchPlacesForNewLocation(
+                                    lat: loc.selectedLocation!.coordinate.latitude,
+                                    lng: loc.selectedLocation!.coordinate.longitude
+                                )
+                            }
+                        )
+                    } else if place != nil {
+                        CardView(
+                            place: place!,
+                            onSwipe: {
+                                (liked: Bool) -> ()  in
+                                let place = placesListModel.getCurrentPlace()!
+                                self.placesListModel.ratePlace(placeId: place.id!, rate: liked)
+                                self.placesListModel.nextPlace()
+                            }
+                        )
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            HStack {
                 Button("❌") {
                     let place = placesListModel.getCurrentPlace()!
                     self.placesListModel.ratePlace(placeId: place.id!, rate: false)
@@ -127,7 +128,7 @@ struct ContentView: View {
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .isHidden(placesListModel.places.isEmpty)
-    
+                
                 // change location
                 Button("🗺️") {
                     self.showMapsPicker.toggle()
@@ -146,11 +147,11 @@ struct ContentView: View {
                         ZStack {
                             
                             GoogleMapsView(mapView: mapView)
-
+                            
                             Image(systemName: "mappin")
                                 .foregroundColor(.red)
                                 .font(.system(size: 32))
-        
+                            
                         }
                         Button(action: {
                             let selectedLat = mapView.projection.coordinate(for: mapView.center).latitude
@@ -170,7 +171,7 @@ struct ContentView: View {
                         .padding(3)
                     }
                 }
-            
+                
                 Button("✅") {
                     let place = placesListModel.getCurrentPlace()!
                     self.placesListModel.ratePlace(placeId: place.id!, rate: true)
@@ -178,13 +179,14 @@ struct ContentView: View {
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .isHidden(placesListModel.places.isEmpty)
-        
+                
+            }
         }
     }
 }
 
 extension View {
-
+    
     @ViewBuilder func isHidden(_ hidden: Bool, remove: Bool = false) -> some View {
         if hidden {
             if !remove {

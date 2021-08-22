@@ -1,0 +1,14 @@
+//
+//  Config.xcconfig
+//  Hungries
+//
+//  Created by Stanislav Miachenkov on 7/25/21.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+GMS_SERVICES_API_KEY = AIzaSyDDt_snbTN5o1jKVohu_kZfORu7vIUuKJA
+
+HUNGRIES_API_USERNAME = hungries
+HUNGRIES_API_PASSWORD = das&DG8x&O2yehdxa
