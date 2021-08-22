@@ -14,5 +14,13 @@ class AuthState: ObservableObject {
     
     @Published var firebaseUser: User?
     
+    init() {
+        let user = Auth.auth().currentUser
+        if (user != nil) {
+            authChecked = true
+            firebaseUser = user
+        }
+    }
+    
 }
 
