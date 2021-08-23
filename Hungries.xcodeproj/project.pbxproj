@@ -57,10 +57,10 @@
 		695D4CAD77650B2116384870 /* Pods-Hungries.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hungries.release.xcconfig"; path = "Target Support Files/Pods-Hungries/Pods-Hungries.release.xcconfig"; sourceTree = "<group>"; };
 		ABFDB20DDFCFD885737D2465 /* Pods-HungriesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HungriesTests.debug.xcconfig"; path = "Target Support Files/Pods-HungriesTests/Pods-HungriesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6127CC626725C92004C03B0 /* LoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
+		D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = HungriesRelease.entitlements; sourceTree = "<group>"; };
 		D658390926A5C74000812BC2 /* Hungries.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hungries.entitlements; sourceTree = "<group>"; };
 		D658396026B69B4200812BC2 /* LikedPlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlacesView.swift; sourceTree = "<group>"; };
 		D660E4AA26C99A43002B9D29 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
-		D66E5D1026CC3774003E70BA /* HungriesRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HungriesRelease.entitlements; sourceTree = "<group>"; };
 		D66E5D2626CC4048003E70BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D6C53FAF2670B41B001FB93F /* Hungries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hungries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C53FB22670B41B001FB93F /* HungriesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HungriesApp.swift; sourceTree = "<group>"; };
@@ -176,8 +176,8 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
+				D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */,
 				D658390926A5C74000812BC2 /* Hungries.entitlements */,
-				D66E5D1026CC3774003E70BA /* HungriesRelease.entitlements */,
 				D66E5D2626CC4048003E70BA /* GoogleService-Info.plist */,
 				D6C53FBB2670B41D001FB93F /* Info.plist */,
 				D6C53FB42670B41B001FB93F /* ContentView.swift */,
