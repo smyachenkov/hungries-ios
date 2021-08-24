@@ -153,22 +153,47 @@ struct ContentView: View {
                                 .font(.system(size: 32))
                             
                         }
-                        Button(action: {
-                            let selectedLat = mapView.projection.coordinate(for: mapView.center).latitude
-                            let selectedLng = mapView.projection.coordinate(for: mapView.center).longitude
-                            loc.selectNewLocation(newLocation: CLLocation.init(latitude: selectedLat, longitude: selectedLng))
-                            self.placesListModel.fetchPlacesForNewLocation(lat: selectedLat, lng: selectedLng)
-                            self.showMapsPicker.toggle()
-                        }) {
+                        HStack {
+                            
                             HStack {
-                                Image(systemName: "location")
-                                Text("Use this location")
-                            }.padding(10)
-                        }.overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.blue, lineWidth: 2.0)
-                        ).font( .system(size: 14))
-                        .padding(3)
+                                Button(action: {
+                                    self.showMapsPicker.toggle()
+                                }) {
+                                    Image(systemName: "arrowshape.turn.up.backward.fill")
+                                }.padding(.leading, 20)
+                            }
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Button(action: {
+                                    let selectedLat = mapView.projection.coordinate(for: mapView.center).latitude
+                                    let selectedLng = mapView.projection.coordinate(for: mapView.center).longitude
+                                    loc.selectNewLocation(newLocation: CLLocation.init(latitude: selectedLat, longitude: selectedLng))
+                                    self.placesListModel.fetchPlacesForNewLocation(lat: selectedLat, lng: selectedLng)
+                                    self.showMapsPicker.toggle()
+                                }) {
+                                    HStack {
+                                        Image(systemName: "location")
+                                        Text("Use this location")
+                                    }.padding(10)
+                                }.overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(Color.blue, lineWidth: 2.0)
+                                ).font( .system(size: 14))
+                            }
+                            
+                            Spacer()
+                            
+                            // hidden copy of the return button, just to center use location button
+                            HStack {
+                                Button(action: {
+                                }) {
+                                    Image(systemName: "arrowshape.turn.up.backward.fill")
+                                }.padding(.leading, 20)
+                            }.hidden()
+            
+                        }.padding(3)
                     }
                 }
                 
