@@ -16,11 +16,6 @@ class ImageLoader: ObservableObject {
     
     private let googlePlaceId: String?
     
-    private let maxSize = CGSize(
-        width: UIScreen.main.bounds.size.width,
-        height: UIScreen.main.bounds.size.height
-    )
-    
     init(googlePlaceId: String?) {
         self.googlePlaceId = googlePlaceId
     }
@@ -42,17 +37,14 @@ class ImageLoader: ObservableObject {
                         return
                     }
                     let firstPhotoMetaData: GMSPlacePhotoMetadata = place.photos![0]
-                    GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData,
-                                                            constrainedTo: self.maxSize,
-                                                            scale: 1.0,
-                                                            callback: { (photo, error) -> Void in
-                                                                if let error = error {
-                                                                    print("Error loading photo metadata: \(error.localizedDescription)")
-                                                                    return
-                                                                } else {
-                                                                    self.image = photo
-                                                                }
-                                                            })
+                    GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData, callback: { (photo, error) -> Void in
+                        if let error = error {
+                            print("Error loading photo metadata: \(error.localizedDescription)")
+                            return
+                        } else {
+                            self.image = photo
+                        }
+                    }) 
                 }
             }
         }
