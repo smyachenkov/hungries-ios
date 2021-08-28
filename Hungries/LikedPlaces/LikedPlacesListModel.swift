@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 
 class LikedPlacesListModel: ObservableObject {
@@ -19,27 +20,34 @@ class LikedPlacesListModel: ObservableObject {
 
     @Published var isLoaded = false
     
+    @ObservedObject var auth = authState
+    
     init() {
     }
     
     public func fetchLikedPlaces(lat: CLLocationDegrees, lng: CLLocationDegrees) {
         self.isLoaded = false
         self.places.removeAll()
-        getLikedPlaces(lat: lat, lng: lng) { response in
-            DispatchQueue.main.async {
-                if let response = response {
-                    response.places?.forEach { p in
-                        self.places.append(p)
+        if (auth.isLoggedIn()) {
+            getLikedPlacesFromApi(lat: lat, lng: lng) { response in
+                DispatchQueue.main.async {
+                    if let response = response {
+                        response.places?.forEach { p in
+                            self.places.append(p)
+                        }
+                        self.isLoaded = true
                     }
-                    self.isLoaded = true
                 }
             }
+        } else {
+            self.places = getLikedPlacesFromUserDefaults()
         }
     }
     
-    private func getLikedPlaces(lat: CLLocationDegrees, lng: CLLocationDegrees, _ completion: @escaping (PlacesResponse?) -> ()) {
+    private func getLikedPlacesFromApi(lat: CLLocationDegrees, lng: CLLocationDegrees, _ completion: @escaping (PlacesResponse?) -> ()) {
+        guard let fireBaseUserID =  auth.firebaseUser?.uid else { return }
         var urlComps = URLComponents(string: "https://hungries-api.herokuapp.com/places/liked")!
-        urlComps.queryItems = [URLQueryItem(name: "device", value: deviceId),
+        urlComps.queryItems = [URLQueryItem(name: "device", value: fireBaseUserID),
                                URLQueryItem(name: "coordinates", value: String(lat) + "," + String(lng)),]
         
         guard let url = URL(string: urlComps.url!.absoluteString) else {
@@ -64,5 +72,17 @@ class LikedPlacesListModel: ObservableObject {
                 completion(nil)
             }
         }).resume()
+    }
+    
+    private func getLikedPlacesFromUserDefaults() -> [Place] {
+        if let data = UserDefaults.standard.data(forKey: "likedPlaces") {
+            do {
+                let decoder = JSONDecoder()
+                return try decoder.decode([Place].self, from: data)
+            } catch {
+                print("Unable to Decode Places (\(error))")
+            }
+        }
+        return [Place]()
     }
 }

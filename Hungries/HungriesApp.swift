@@ -23,8 +23,6 @@ class AppDelegate: NSObject, UIApplicationDelegate    {
      }
  }
 
-let deviceId: String = UIDevice.current.identifierForVendor!.uuidString
-
 @main
 struct HungriesApp: App {
     

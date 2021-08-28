@@ -12,7 +12,7 @@ struct PlacesResponse : Decodable {
     let nextPageToken: String?
 }
 
-struct Place: Decodable, Hashable {
+struct Place: Encodable, Decodable, Hashable {
     let id : Int?
     let googlePlaceId : String?
     let name : String?

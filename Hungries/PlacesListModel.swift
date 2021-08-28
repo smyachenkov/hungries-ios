@@ -5,6 +5,7 @@
 //  Created by Stanislav Miachenkov on 5/14/21.
 //
 
+import SwiftUI
 import Foundation
 import CoreLocation
 
@@ -19,6 +20,8 @@ class PlacesListModel: ObservableObject {
     @Published var hasNextPage = false
     
     @Published var isLoaded = false
+    
+    @ObservedObject var auth = authState
     
     var loc = location
 
@@ -73,8 +76,13 @@ class PlacesListModel: ObservableObject {
     }
     
     // todo: common parts in one place, async call, error handle
-    public func ratePlace(placeId: Int, rate: Bool) {
-        let urlString = "https://hungries-api.herokuapp.com/place/\(placeId)/like/\(deviceId)/\(rate.description)"
+    public func ratePlace(placeId: Int, place: Place?, rate: Bool) {
+        if (!auth.isLoggedIn()) {
+            saveRatingInUserDefaults(placeId: placeId, place: place, rate: rate)
+            return
+        }
+        let fireBaseUserID = auth.firebaseUser!.uid 
+        let urlString = "https://hungries-api.herokuapp.com/place/\(placeId)/like/\(fireBaseUserID)/\(rate.description)"
         let urlComps = URLComponents(string: urlString)!
         guard let url = URL(string: urlComps.url!.absoluteString) else {
             print("Invalid URL")
@@ -102,8 +110,10 @@ class PlacesListModel: ObservableObject {
                            lat: CLLocationDegrees, lng: CLLocationDegrees,
                            _ completion: @escaping (PlacesResponse?) -> ()) {
         var urlComps = URLComponents(string: "https://hungries-api.herokuapp.com/places")!
+        
+        let fireBaseUserID = (auth.firebaseUser != nil) ? auth.firebaseUser!.uid : ""
         urlComps.queryItems = [URLQueryItem(name: "radius", value: "500"),
-                               URLQueryItem(name: "device", value: deviceId),
+                               URLQueryItem(name: "device", value: fireBaseUserID),
                                URLQueryItem(name: "coordinates", value: String(lat) + "," + String(lng)),]
         if (nextPageToken != nil) {
             urlComps.queryItems?.append(URLQueryItem(name: "pagetoken", value: nextPageToken!))
@@ -131,6 +141,38 @@ class PlacesListModel: ObservableObject {
                 completion(nil)
             }
         }).resume()
+    }
+    
+    private func saveRatingInUserDefaults(placeId: Int, place: Place?, rate: Bool) {
+        // get current data
+        var currentPlaces = [Place]()
+        if let data = UserDefaults.standard.data(forKey: "likedPlaces") {
+            do {
+                let decoder = JSONDecoder()
+                currentPlaces = try decoder.decode([Place].self, from: data)
+            } catch {
+                print("Unable to Decode Places (\(error))")
+            }
+        }
+        
+        // update list: remove or add new
+        if (!rate) {
+            // check if exist and remove
+            currentPlaces = currentPlaces.filter { $0.id != placeId }
+        } else {
+            if (place != nil) {
+                currentPlaces.append(place!)
+            }
+        }
+        
+        // save
+        do {
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(currentPlaces)
+            UserDefaults.standard.set(data, forKey: "likedPlaces")
+        } catch {
+            print("Unable to Encode Array of Places (\(error))")
+        }
         
     }
 }

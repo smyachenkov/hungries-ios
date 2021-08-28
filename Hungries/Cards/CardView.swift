@@ -103,6 +103,7 @@ struct CardView: View {
                                 Spacer()
                                 
                                 // todo replace with hand.thumbsup.circle
+                                // todo display for unauthorized users too
                                 if (self.place.isLiked != nil) {
                                     if (self.place.isLiked!) {
                                         Image(systemName: "hand.thumbsup.fill")

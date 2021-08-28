@@ -22,5 +22,9 @@ class AuthState: ObservableObject {
         }
     }
     
+    public func isLoggedIn() -> Bool {
+        return self.firebaseUser != nil
+    }
+    
 }
 

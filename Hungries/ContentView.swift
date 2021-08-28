@@ -65,7 +65,7 @@ struct ContentView: View {
                         places: self.likedPlacesListModel.places,
                         sendRemoveAction: {
                             (placeId: Int) -> ()  in
-                            self.placesListModel.ratePlace(placeId: placeId, rate: false)
+                            self.placesListModel.ratePlace(placeId: placeId, place: nil, rate: false)
                         }
                     )
                 }
@@ -110,7 +110,7 @@ struct ContentView: View {
                             onSwipe: {
                                 (liked: Bool) -> ()  in
                                 let place = placesListModel.getCurrentPlace()!
-                                self.placesListModel.ratePlace(placeId: place.id!, rate: liked)
+                                self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: liked)
                                 self.placesListModel.nextPlace()
                             }
                         )
@@ -123,7 +123,7 @@ struct ContentView: View {
             HStack {
                 Button("❌") {
                     let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(placeId: place.id!, rate: false)
+                    self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: false)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
@@ -135,6 +135,7 @@ struct ContentView: View {
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showMapsPicker) {
+                    // todo move all this to different file
                     if (loc.lastLocation != nil) {
                         let mapView = GMSMapView.map(
                             withFrame: CGRect.zero,
@@ -199,7 +200,7 @@ struct ContentView: View {
                 
                 Button("✅") {
                     let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(placeId: place.id!, rate: true)
+                    self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: true)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
