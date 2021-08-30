@@ -30,5 +30,17 @@ struct Place: Encodable, Decodable, Hashable {
         hasher.combine(photoUrl)
         hasher.combine(isLiked)
     }
+    
 }
 
+extension Place {
+    init(origin: Place, _isLiked: Bool?) {
+        id = origin.id
+        googlePlaceId = origin.googlePlaceId
+        name = origin.name
+        url = origin.url
+        distance = origin.distance
+        photoUrl = origin.photoUrl
+        isLiked = _isLiked
+    }
+}

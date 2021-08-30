@@ -16,7 +16,7 @@ class PlacesListModel: ObservableObject {
     let apiPassword = Bundle.main.infoDictionary!["HUNGRIES_API_PASSWORD"] as! String
     
     @Published var places = [Place]()
-        
+    
     @Published var hasNextPage = false
     
     @Published var isLoaded = false
@@ -24,11 +24,11 @@ class PlacesListModel: ObservableObject {
     @ObservedObject var auth = authState
     
     var loc = location
-
+    
     var nextPageToken: String?
     
     private var fetchedFirstBatch = false;
-        
+    
     public func getCurrentPlace() -> Place? {
         if (!fetchedFirstBatch) {
             fetchPlaces(
@@ -61,13 +61,33 @@ class PlacesListModel: ObservableObject {
     
     public func fetchPlaces(nextPageToken: String?, lat: CLLocationDegrees, lng: CLLocationDegrees) {
         self.isLoaded = false
+        
         getPlaces(nextPageToken: nextPageToken, lat: lat, lng: lng) { response in
             DispatchQueue.main.async {
                 if let response = response {
                     self.nextPageToken = response.nextPageToken
                     self.hasNextPage = response.nextPageToken?.count ?? 0 > 0
+                    
+                    // for unauthorized users: check local storage and update likes from it
+                    let localLikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "likedPlaces")
+                    let localDislikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "dislikedPlaces")
+                    
                     response.places?.forEach { p in
-                        self.places.append(p)
+                        if (!self.auth.isLoggedIn()) {
+                            // find if liked or disliked in local storages
+                            let localPlaceLiked = localLikedPlaces.first(where: { $0.id == p.id})
+                            let localPlaceDisliked = localDislikedPlaces.first(where: { $0.id == p.id})
+                            let ratedBefore = localPlaceLiked != nil || localPlaceDisliked != nil
+                            if (ratedBefore) {
+                                let localPlace = localPlaceLiked != nil ? localPlaceLiked : localPlaceDisliked
+                                let updatedPlace = Place(origin: p, _isLiked: localPlace?.isLiked)
+                                self.places.append(updatedPlace)
+                            } else {
+                                self.places.append(p)
+                            }
+                        } else {
+                            self.places.append(p)
+                        }
                     }
                 }
                 self.isLoaded = true
@@ -143,10 +163,50 @@ class PlacesListModel: ObservableObject {
         }).resume()
     }
     
+    // todo move to separate class for defaults storage
     private func saveRatingInUserDefaults(placeId: Int, place: Place?, rate: Bool) {
-        // get current data
+        var currentLikedPlaces = getPlacesFromUserDefaults(key: "likedPlaces")
+        var currentDislikedPlaces = getPlacesFromUserDefaults(key: "dislikedPlaces")
+
+        if (rate && place == nil) {
+            print("place can be nil only for dislike")
+            return
+        }
+        
+        let updatedPlace = Place(origin: place!, _isLiked: rate)
+        
+        // update list: remove or add new
+        if (!rate) {
+            // check if exist in liked and remove, add to disliked
+            currentLikedPlaces = currentLikedPlaces.filter { $0.id != placeId }
+            if (!currentDislikedPlaces.contains { $0.id == placeId }) {
+                currentDislikedPlaces.append(updatedPlace)
+            }
+        } else {
+            // remove from disliked
+            currentDislikedPlaces = currentDislikedPlaces.filter { $0.id != placeId }
+            if (!currentLikedPlaces.contains { $0.id == placeId }) {
+                currentLikedPlaces.append(updatedPlace)
+            }
+        }
+        
+        // save
+        do {
+            let encoder = JSONEncoder()
+            
+            let likedPlacesJson = try encoder.encode(currentLikedPlaces)
+            UserDefaults.standard.set(likedPlacesJson, forKey: "likedPlaces")
+            
+            let dislikedPlacesJson = try encoder.encode(currentLikedPlaces)
+            UserDefaults.standard.set(dislikedPlacesJson, forKey: "dislikedPlaces")
+        } catch {
+            print("Unable to Encode Array of Places (\(error))")
+        }
+    }
+    
+    private func getPlacesFromUserDefaults(key: String) -> [Place] {
         var currentPlaces = [Place]()
-        if let data = UserDefaults.standard.data(forKey: "likedPlaces") {
+        if let data = UserDefaults.standard.data(forKey: key) {
             do {
                 let decoder = JSONDecoder()
                 currentPlaces = try decoder.decode([Place].self, from: data)
@@ -154,25 +214,6 @@ class PlacesListModel: ObservableObject {
                 print("Unable to Decode Places (\(error))")
             }
         }
-        
-        // update list: remove or add new
-        if (!rate) {
-            // check if exist and remove
-            currentPlaces = currentPlaces.filter { $0.id != placeId }
-        } else {
-            if (place != nil) {
-                currentPlaces.append(place!)
-            }
-        }
-        
-        // save
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(currentPlaces)
-            UserDefaults.standard.set(data, forKey: "likedPlaces")
-        } catch {
-            print("Unable to Encode Array of Places (\(error))")
-        }
-        
+        return currentPlaces;
     }
 }

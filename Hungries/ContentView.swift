@@ -64,8 +64,8 @@ struct ContentView: View {
                     LikedPlacesView(
                         places: self.likedPlacesListModel.places,
                         sendRemoveAction: {
-                            (placeId: Int) -> ()  in
-                            self.placesListModel.ratePlace(placeId: placeId, place: nil, rate: false)
+                            (place: Place) -> ()  in
+                            self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: false)
                         }
                     )
                 }

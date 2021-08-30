@@ -27,15 +27,15 @@ struct LikedPlacesView: View {
     
     @ObservedObject var places: LikedList
     
-    var sendRemoveAction: (Int) -> Void
+    var sendRemoveAction: (Place) -> Void
         
     @State var showRemoveDialog = false
     
-    @State var lastClickedPlaceId = -1
+    @State var lastClickedPlace: Place? = nil
         
     @Environment(\.colorScheme) var colorScheme
     
-    init(places: [Place], sendRemoveAction: @escaping (Int) -> Void) {
+    init(places: [Place], sendRemoveAction: @escaping (Place) -> Void) {
         self.places = LikedList(data: places)
         self.sendRemoveAction = sendRemoveAction
     }
@@ -68,7 +68,7 @@ struct LikedPlacesView: View {
                             
                             // remove liked place button
                             Button(action: {
-                                lastClickedPlaceId = place.id!
+                                lastClickedPlace = place
                                 showRemoveDialog.toggle()
                             }) {
                                 Text("❌")
@@ -77,8 +77,10 @@ struct LikedPlacesView: View {
                                     title: Text("Do you want to remove this place from liked?"),
                                     message: Text("You can like it again when you see it"),
                                     primaryButton: .destructive(Text("Remove")) {
-                                        self.places.deleteById(placeId: self.lastClickedPlaceId)
-                                        self.sendRemoveAction(self.lastClickedPlaceId)
+                                        self.places.deleteById(placeId: self.lastClickedPlace?.id ?? -1)
+                                        if (self.lastClickedPlace != nil) {
+                                            self.sendRemoveAction(self.lastClickedPlace!)
+                                        }
                                     },
                                     secondaryButton: .cancel()
                                 )
@@ -106,8 +108,8 @@ struct LikedPlacesView_Previews: PreviewProvider {
             LikedPlacesView(
                 places: testPlaces,
                 sendRemoveAction: {
-                    (placeId: Int) -> ()  in
-                    print(placeId)
+                    (place: Place) -> ()  in
+                    print(place)
                 }
             ).preferredColorScheme($0)
         }
