@@ -65,7 +65,7 @@ struct ContentView: View {
                         places: self.likedPlacesListModel.places,
                         sendRemoveAction: {
                             (place: Place) -> ()  in
-                            self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: false)
+                            self.placesListModel.ratePlace(place: place, rate: false)
                         }
                     )
                 }
@@ -110,7 +110,7 @@ struct ContentView: View {
                             onSwipe: {
                                 (liked: Bool) -> ()  in
                                 let place = placesListModel.getCurrentPlace()!
-                                self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: liked)
+                                self.placesListModel.ratePlace(place: place, rate: liked)
                                 self.placesListModel.nextPlace()
                             }
                         )
@@ -123,7 +123,7 @@ struct ContentView: View {
             HStack {
                 Button("❌") {
                     let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: false)
+                    self.placesListModel.ratePlace(place: place, rate: false)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)
@@ -200,7 +200,7 @@ struct ContentView: View {
                 
                 Button("✅") {
                     let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(placeId: place.id!, place: place, rate: true)
+                    self.placesListModel.ratePlace(place: place, rate: true)
                     self.placesListModel.nextPlace()
                 }.font(.title)
                 .frame(maxWidth: .infinity)

@@ -96,13 +96,14 @@ class PlacesListModel: ObservableObject {
     }
     
     // todo: common parts in one place, async call, error handle
-    public func ratePlace(placeId: Int, place: Place?, rate: Bool) {
+    public func ratePlace(place: Place, rate: Bool) {
+        let placeId = place.id
         if (!auth.isLoggedIn()) {
-            saveRatingInUserDefaults(placeId: placeId, place: place, rate: rate)
+            saveRatingInUserDefaults(place: place, rate: rate)
             return
         }
         let fireBaseUserID = auth.firebaseUser!.uid 
-        let urlString = "https://hungries-api.herokuapp.com/place/\(placeId)/like/\(fireBaseUserID)/\(rate.description)"
+        let urlString = "https://hungries-api.herokuapp.com/place/\(placeId!)/like/\(fireBaseUserID)/\(rate.description)"
         let urlComps = URLComponents(string: urlString)!
         guard let url = URL(string: urlComps.url!.absoluteString) else {
             print("Invalid URL")
@@ -164,16 +165,12 @@ class PlacesListModel: ObservableObject {
     }
     
     // todo move to separate class for defaults storage
-    private func saveRatingInUserDefaults(placeId: Int, place: Place?, rate: Bool) {
+    private func saveRatingInUserDefaults(place: Place, rate: Bool) {
         var currentLikedPlaces = getPlacesFromUserDefaults(key: "likedPlaces")
         var currentDislikedPlaces = getPlacesFromUserDefaults(key: "dislikedPlaces")
-
-        if (rate && place == nil) {
-            print("place can be nil only for dislike")
-            return
-        }
         
-        let updatedPlace = Place(origin: place!, _isLiked: rate)
+        let placeId = place.id!
+        let updatedPlace = Place(origin: place, _isLiked: rate)
         
         // update list: remove or add new
         if (!rate) {
