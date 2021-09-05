@@ -52,12 +52,15 @@ struct ContentView: View {
         } else {
             HStack {
                 // saved
-                Button("🔖") {
+                Button(action: {
                     self.showLikedList.toggle()
                     self.likedPlacesListModel.fetchLikedPlaces(
                         lat: loc.selectedLocation!.coordinate.latitude,
                         lng: loc.selectedLocation!.coordinate.longitude
                     )
+                }) {
+                    Image(systemName: "list.bullet")
+                        .padding(3)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showLikedList) {
@@ -121,17 +124,22 @@ struct ContentView: View {
             Spacer()
             
             HStack {
-                Button("❌") {
+                Button(action: {
                     let place = placesListModel.getCurrentPlace()!
                     self.placesListModel.ratePlace(place: place, rate: false)
                     self.placesListModel.nextPlace()
+                }) {
+                    Image(systemName: "xmark")
+                        .foregroundColor(.red)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .isHidden(placesListModel.places.isEmpty)
                 
                 // change location
-                Button("🗺️") {
+                Button(action: {
                     self.showMapsPicker.toggle()
+                }) {
+                    Image(systemName: "map")
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showMapsPicker) {
@@ -198,10 +206,13 @@ struct ContentView: View {
                     }
                 }
                 
-                Button("✅") {
+                Button(action: {
                     let place = placesListModel.getCurrentPlace()!
                     self.placesListModel.ratePlace(place: place, rate: true)
                     self.placesListModel.nextPlace()
+                }) {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.green)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .isHidden(placesListModel.places.isEmpty)

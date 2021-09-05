@@ -71,7 +71,8 @@ struct LikedPlacesView: View {
                                 lastClickedPlace = place
                                 showRemoveDialog.toggle()
                             }) {
-                                Text("❌")
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.red)
                             }.alert(isPresented: $showRemoveDialog) {
                                 Alert(
                                     title: Text("Do you want to remove this place from liked?"),
