@@ -17,8 +17,6 @@ struct CardView: View {
     @State private var swipeStatus: LikeDislike = .none
     
     @ObservedObject var imageLoader: ImageLoader
-
-    @EnvironmentObject var settings: UserSettings
     
     @Environment(\.colorScheme) var colorScheme
 

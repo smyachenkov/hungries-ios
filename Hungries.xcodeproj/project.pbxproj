@@ -11,6 +11,7 @@
 		5EA0E125A9D29C1A315A4E1B /* Pods_HungriesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F6D445CDCB4695BD8EAE80 /* Pods_HungriesTests.framework */; };
 		72BC3403F6D0EA872413A432 /* Pods_Hungries_HungriesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55CDA88977DF791DA7E0C3B1 /* Pods_Hungries_HungriesUITests.framework */; };
 		D6127CC726725C92004C03B0 /* LoadingCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6127CC626725C92004C03B0 /* LoadingCardView.swift */; };
+		D63D5E8526E52DB1003006D6 /* UserSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63D5E8426E52DB1003006D6 /* UserSettingsView.swift */; };
 		D658396126B69B4200812BC2 /* LikedPlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D658396026B69B4200812BC2 /* LikedPlacesView.swift */; };
 		D660E4AB26C99A43002B9D29 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D660E4AA26C99A43002B9D29 /* ImageLoader.swift */; };
 		D66E5D2726CC4048003E70BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D66E5D2626CC4048003E70BA /* GoogleService-Info.plist */; };
@@ -26,7 +27,6 @@
 		D6C53FFE2670BCE8001FB93F /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C53FFD2670BCE8001FB93F /* Location.swift */; };
 		D6C540032670BCFB001FB93F /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C540022670BCFB001FB93F /* Place.swift */; };
 		D6C540082670BD08001FB93F /* PlacesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C540072670BD08001FB93F /* PlacesListModel.swift */; };
-		D6C5400D2670BD1D001FB93F /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C5400C2670BD1D001FB93F /* UserSettings.swift */; };
 		D6CDB7B92677A449004393A3 /* LikedPlacesListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6CDB7B82677A449004393A3 /* LikedPlacesListModel.swift */; };
 		D6DC659326D2C4C30075B3AD /* AuthScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC659226D2C4C30075B3AD /* AuthScreenView.swift */; };
 		D6DC659E26D2C6150075B3AD /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DC659D26D2C6150075B3AD /* AuthState.swift */; };
@@ -57,6 +57,7 @@
 		695D4CAD77650B2116384870 /* Pods-Hungries.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hungries.release.xcconfig"; path = "Target Support Files/Pods-Hungries/Pods-Hungries.release.xcconfig"; sourceTree = "<group>"; };
 		ABFDB20DDFCFD885737D2465 /* Pods-HungriesTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HungriesTests.debug.xcconfig"; path = "Target Support Files/Pods-HungriesTests/Pods-HungriesTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D6127CC626725C92004C03B0 /* LoadingCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCardView.swift; sourceTree = "<group>"; };
+		D63D5E8426E52DB1003006D6 /* UserSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettingsView.swift; sourceTree = "<group>"; };
 		D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = HungriesRelease.entitlements; sourceTree = "<group>"; };
 		D658390926A5C74000812BC2 /* Hungries.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hungries.entitlements; sourceTree = "<group>"; };
 		D658396026B69B4200812BC2 /* LikedPlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlacesView.swift; sourceTree = "<group>"; };
@@ -80,7 +81,6 @@
 		D6C53FFD2670BCE8001FB93F /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		D6C540022670BCFB001FB93F /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
 		D6C540072670BD08001FB93F /* PlacesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesListModel.swift; sourceTree = "<group>"; };
-		D6C5400C2670BD1D001FB93F /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		D6CDB7B82677A449004393A3 /* LikedPlacesListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedPlacesListModel.swift; sourceTree = "<group>"; };
 		D6DC659226D2C4C30075B3AD /* AuthScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthScreenView.swift; sourceTree = "<group>"; };
 		D6DC659D26D2C6150075B3AD /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
@@ -151,6 +151,14 @@
 			path = Cards;
 			sourceTree = "<group>";
 		};
+		D63D5E8326E52D9A003006D6 /* UserSettings */ = {
+			isa = PBXGroup;
+			children = (
+				D63D5E8426E52DB1003006D6 /* UserSettingsView.swift */,
+			);
+			path = UserSettings;
+			sourceTree = "<group>";
+		};
 		D6C53FA62670B41B001FB93F = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +184,7 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
+				D63D5E8326E52D9A003006D6 /* UserSettings */,
 				D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */,
 				D658390926A5C74000812BC2 /* Hungries.entitlements */,
 				D66E5D2626CC4048003E70BA /* GoogleService-Info.plist */,
@@ -185,7 +194,6 @@
 				D6C53FFD2670BCE8001FB93F /* Location.swift */,
 				D6C540022670BCFB001FB93F /* Place.swift */,
 				D6C540072670BD08001FB93F /* PlacesListModel.swift */,
-				D6C5400C2670BD1D001FB93F /* UserSettings.swift */,
 				D6C53FB62670B41D001FB93F /* Assets.xcassets */,
 				D6C53FF02670BAF6001FB93F /* Config.xcconfig */,
 				D6DC657926D2BDFF0075B3AD /* Auth */,
@@ -525,8 +533,8 @@
 				D6C540032670BCFB001FB93F /* Place.swift in Sources */,
 				D6DC659E26D2C6150075B3AD /* AuthState.swift in Sources */,
 				D6C53FF92670BBBD001FB93F /* LastCardView.swift in Sources */,
+				D63D5E8526E52DB1003006D6 /* UserSettingsView.swift in Sources */,
 				D6CDB7B92677A449004393A3 /* LikedPlacesListModel.swift in Sources */,
-				D6C5400D2670BD1D001FB93F /* UserSettings.swift in Sources */,
 				D6C53FB32670B41B001FB93F /* HungriesApp.swift in Sources */,
 				D6C540082670BD08001FB93F /* PlacesListModel.swift in Sources */,
 			);

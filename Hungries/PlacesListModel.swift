@@ -23,6 +23,9 @@ class PlacesListModel: ObservableObject {
     
     @ObservedObject var auth = authState
     
+    // default value before it's changed in settings
+    @AppStorage(SETTINGS_KEY_SEARCH_RADIUS) var searchRadius: Int = 500
+    
     var loc = location
     
     var nextPageToken: String?
@@ -131,9 +134,8 @@ class PlacesListModel: ObservableObject {
                            lat: CLLocationDegrees, lng: CLLocationDegrees,
                            _ completion: @escaping (PlacesResponse?) -> ()) {
         var urlComps = URLComponents(string: "https://hungries-api.herokuapp.com/places")!
-        
         let fireBaseUserID = (auth.firebaseUser != nil) ? auth.firebaseUser!.uid : ""
-        urlComps.queryItems = [URLQueryItem(name: "radius", value: "500"),
+        urlComps.queryItems = [URLQueryItem(name: "radius", value: String(searchRadius)),
                                URLQueryItem(name: "device", value: fireBaseUserID),
                                URLQueryItem(name: "coordinates", value: String(lat) + "," + String(lng)),]
         if (nextPageToken != nil) {

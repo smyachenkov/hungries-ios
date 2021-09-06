@@ -15,8 +15,6 @@ import GoogleMaps
 
 
 struct LastCardView: View {
-
-    @EnvironmentObject var settings: UserSettings
     
     private var reloadAction: () -> Void
 

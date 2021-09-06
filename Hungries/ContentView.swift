@@ -42,8 +42,6 @@ struct ContentView: View {
     
     @State private var showLikedList = false
     
-    @StateObject var settings = UserSettings()
-    
     @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
@@ -72,23 +70,18 @@ struct ContentView: View {
                         }
                     )
                 }
-                /*
+                
                 // settings
-                Button("⚙️") {
+                Button(action: {
                     self.showUserSettigns.toggle()
+                }) {
+                    Image(systemName: "gear")
+                        .padding(3)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
-                .background(Color.white)
                 .sheet(isPresented: $showUserSettigns) {
-                    VStack {
-                        HStack {
-                            let radiusBefore = Int(settings.radius)
-                            Text("Radius")
-                            Slider(value: $settings.radius, in: 100...1000)
-                            Text("\(Int(settings.radius)) was \(radiusBefore)")
-                        }
-                    }.padding()
-                }*/
+                    UserSettingsView()
+                }
 
             }
             
