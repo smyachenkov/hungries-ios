@@ -59,6 +59,7 @@ struct ContentView: View {
                 }) {
                     Image(systemName: "list.bullet")
                         .padding(3)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showLikedList) {
@@ -77,6 +78,7 @@ struct ContentView: View {
                 }) {
                     Image(systemName: "gear")
                         .padding(3)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showUserSettigns) {
