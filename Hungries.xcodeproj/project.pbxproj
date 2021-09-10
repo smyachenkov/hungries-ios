@@ -699,6 +699,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hungries/Hungries.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Hungries/Preview Content\"";
 				DEVELOPMENT_TEAM = 4X7QVV82JV;
 				ENABLE_PREVIEWS = YES;
@@ -726,6 +727,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hungries/HungriesRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"Hungries/Preview Content\"";
 				DEVELOPMENT_TEAM = 4X7QVV82JV;
 				ENABLE_PREVIEWS = YES;

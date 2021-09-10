@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>HUNGRIES_API_PASSWORD</key>
-	<string>$(HUNGRIES_API_PASSWORD)</string>
-	<key>HUNGRIES_API_USERNAME</key>
-	<string>$(HUNGRIES_API_USERNAME)</string>
-	<key>GMS_SERVICES_API_KEY</key>
-	<string>$(GMS_SERVICES_API_KEY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -25,7 +19,13 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GMS_SERVICES_API_KEY</key>
+	<string>$(GMS_SERVICES_API_KEY)</string>
+	<key>HUNGRIES_API_PASSWORD</key>
+	<string>$(HUNGRIES_API_PASSWORD)</string>
+	<key>HUNGRIES_API_USERNAME</key>
+	<string>$(HUNGRIES_API_USERNAME)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
