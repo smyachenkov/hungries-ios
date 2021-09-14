@@ -63,13 +63,15 @@ struct ContentView: View {
                 }.font(.title)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showLikedList) {
-                    LikedPlacesView(
-                        places: self.likedPlacesListModel.places,
-                        sendRemoveAction: {
-                            (place: Place) -> ()  in
-                            self.placesListModel.ratePlace(place: place, rate: false)
-                        }
-                    )
+                    if (self.likedPlacesListModel.isLoaded) {
+                        LikedPlacesView(
+                            places: self.likedPlacesListModel.places,
+                            sendRemoveAction: {
+                                (place: Place) -> ()  in
+                                self.placesListModel.ratePlace(place: place, rate: false)
+                            }
+                        )
+                    }
                 }
                 
                 // settings

@@ -33,7 +33,7 @@ struct CardView: View {
     init(place: Place, onSwipe: @escaping (Bool) -> Void) {
         self.place = place
         self.onSwipe = onSwipe
-        self.imageLoader = ImageLoader(googlePlaceId: place.googlePlaceId)
+        self.imageLoader = ImageLoader(googlePlaceId: place.place_id)
         // todo move to onAppear()
         imageLoader.load()
     }
@@ -85,9 +85,11 @@ struct CardView: View {
                                 .frame(width: geometry.size.width)
                             
                             HStack {
-                                Text("Distance: \(self.place.distance!)m")
+                                let distance = location.distanceFrom(place: place)
+                                Text("Distance: \(distance)m")
                                     .padding()
-                                Link(destination: URL(string: self.place.url!)!,
+                                // todo move to common class
+                                Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + place.place_id!)!,
                                      label: {
                                         Text("Open in maps").underline()
                                      }).padding()
@@ -119,8 +121,6 @@ struct CardView: View {
                             Spacer()
                         }
                     }
-                   
-                    
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)

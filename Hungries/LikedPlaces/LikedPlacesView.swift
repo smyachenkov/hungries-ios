@@ -15,12 +15,11 @@ class LikedList: ObservableObject {
         self.data = data
     }
     
-    func deleteById(placeId: Int) {
+    func deleteById(placeId: String) {
         self.data = data.filter { place in
-            return place.id != placeId
+            return place.place_id != placeId
         }
     }
-    
 }
 
 struct LikedPlacesView: View {
@@ -56,12 +55,16 @@ struct LikedPlacesView: View {
                             // place info
                             HStack {
                                 Link(
-                                    destination: URL(string: place.url!)!,
+                                    // todo use name in query instead of Google value
+                                    // todo move to common class
+                                    destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + place.place_id!)!,
                                     label: {
                                         Text(place.name!).underline()
                                      })
                                 Spacer()
-                                Text("\(place.distance!)m")
+                            
+                                let distance = location.distanceFrom(place: place)
+                                Text("\(distance)m")
                             }
                             
                             Spacer()
@@ -78,7 +81,7 @@ struct LikedPlacesView: View {
                                     title: Text("Do you want to remove this place from liked?"),
                                     message: Text("You can like it again when you see it"),
                                     primaryButton: .destructive(Text("Remove")) {
-                                        self.places.deleteById(placeId: self.lastClickedPlace?.id ?? -1)
+                                        self.places.deleteById(placeId: self.lastClickedPlace?.place_id ?? "")
                                         if (self.lastClickedPlace != nil) {
                                             self.sendRemoveAction(self.lastClickedPlace!)
                                         }
@@ -102,8 +105,8 @@ struct LikedPlacesView_Previews: PreviewProvider {
     
     static var previews: some View {
         let testPlaces = [
-            Place(id: 1, googlePlaceId: "1", name: "Dirty Coffee", url: "google.com", distance: 100, photoUrl: "", isLiked: true),
-            Place(id: 2, googlePlaceId: "1",  name: "Night Pizza", url: "google.com", distance: 200, photoUrl: "", isLiked: true)
+            Place(place_id: "1", name: "Perfect Pizza", rating: 5.0, vicinity: "Rome", geometry: nil, isLiked: true, distance: nil),
+            Place(place_id: "2", name: "Crispy Coffee", rating: 5.0, vicinity: "Paris", geometry: nil, isLiked: true, distance: nil)
         ]
         ForEach(ColorScheme.allCases, id: \.self) {
             LikedPlacesView(

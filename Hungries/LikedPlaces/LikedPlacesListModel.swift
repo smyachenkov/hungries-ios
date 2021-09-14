@@ -36,12 +36,11 @@ class LikedPlacesListModel: ObservableObject {
         } else {
             getLikedPlacesFromUserDefaults()
         }
-        self.isLoaded = true
     }
     
     private func getLikedPlacesFromFirebase() {
         let fireBaseUserID = auth.firebaseUser!.uid
-        
+    
         firebaseRdRef
             .child("users/\(fireBaseUserID)/ratings/liked/")
             .observeSingleEvent(of: .value, with: { (snapshot) in
@@ -49,22 +48,26 @@ class LikedPlacesListModel: ObservableObject {
                     for child in snapshot.children {
                         if let childSnapshot = child as? DataSnapshot {
                             let placeId = childSnapshot.key
-                            print("checking place \(placeId)")
+
                             // fetch place from places collection
                             self.firebaseRdRef
                                 .child("places/\(placeId)")
                                 .observeSingleEvent(of: .value, with: { (placeSnapshot) in
                                     if placeSnapshot.exists() {
                                         let placeSnapshotVal = placeSnapshot.value as? NSDictionary
-                                        // todo update ater migration to Places SDK
                                         let place = Place(
-                                            id: 0,
-                                            googlePlaceId: placeSnapshotVal?["googleId"] as? String ?? "",
-                                            name: placeSnapshotVal?["name"] as? String ?? "",
-                                            url: "google.com",
-                                            distance: 500,
-                                            photoUrl: nil,
-                                            isLiked: true
+                                            place_id: placeSnapshotVal?["place_id"] as? String,
+                                            name: placeSnapshotVal?["name"] as? String,
+                                            rating: placeSnapshotVal?["rating"] as? Double,
+                                            vicinity: placeSnapshotVal?["vicinity"] as? String,
+                                            geometry: GeometryModel(
+                                                location: LocationModel(
+                                                    lat: placeSnapshotVal?.value(forKeyPath: "geometry.location.lat") as? Double,
+                                                    lng: placeSnapshotVal?.value(forKeyPath: "geometry.location.lng") as? Double
+                                                )
+                                            ),
+                                            isLiked: true,
+                                            distance: nil
                                         )
                                         self.places.append(place)
                                     } else {
@@ -76,6 +79,7 @@ class LikedPlacesListModel: ObservableObject {
                 } else {
                     print("No liked places for user \(fireBaseUserID)")
                 }
+                self.isLoaded = true
             })
     }
     
@@ -87,6 +91,7 @@ class LikedPlacesListModel: ObservableObject {
             } catch {
                 print("Unable to Decode Places (\(error))")
             }
+            self.isLoaded = true
         }
     }
 }

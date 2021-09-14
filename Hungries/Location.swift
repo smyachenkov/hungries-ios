@@ -58,4 +58,13 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
     func selectNewLocation(newLocation: CLLocation) {
         selectedLocation = newLocation
     }
+    
+    // todo return string with meters/kilometers
+    func distanceFrom(place: Place?) -> Int {
+        if (place == nil || place?.geometry == nil || place?.geometry?.location == nil) {
+            return -1
+        }
+        let fromLoc = CLLocation(latitude: place!.geometry!.location!.lat!, longitude: place!.geometry!.location!.lng!)
+        return Int(selectedLocation!.distance(from: fromLoc))
+    }
 }

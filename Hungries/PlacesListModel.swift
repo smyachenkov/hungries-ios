@@ -9,6 +9,8 @@ import SwiftUI
 import Foundation
 import CoreLocation
 import Firebase
+import GooglePlaces
+import GoogleMaps
 
 class PlacesListModel: ObservableObject {
     
@@ -33,7 +35,7 @@ class PlacesListModel: ObservableObject {
     
     private var fetchedFirstBatch = false;
     
-    var firebaseRdRef = Database.database().reference()
+    private var firebaseRdRef = Database.database().reference()
     
     public func getCurrentPlace() -> Place? {
         if (!fetchedFirstBatch) {
@@ -65,46 +67,54 @@ class PlacesListModel: ObservableObject {
         fetchPlaces(nextPageToken: nil, lat: lat, lng: lng)
     }
     
+    // todo convert place to new place struct with distance and likes
     public func fetchPlaces(nextPageToken: String?, lat: CLLocationDegrees, lng: CLLocationDegrees) {
         self.isLoaded = false
-
         getPlaces(nextPageToken: nextPageToken, lat: lat, lng: lng) { response in
             DispatchQueue.main.async {
                 if let response = response {
-                    self.nextPageToken = response.nextPageToken
-                    self.hasNextPage = response.nextPageToken?.count ?? 0 > 0
+                    self.nextPageToken = response.next_page_token
+                    self.hasNextPage = response.next_page_token?.count ?? 0 > 0
                     
                     // for unauthorized users: check local storage and update likes from it
                     let localLikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "likedPlaces")
                     let localDislikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "dislikedPlaces")
                     
-                    response.places?.forEach { p in
+                    response.results?.forEach { p in
                         if (!self.auth.isLoggedIn()) {
-                            let localPlaceLiked = localLikedPlaces.first(where: { $0.id == p.id})
-                            let localPlaceDisliked = localDislikedPlaces.first(where: { $0.id == p.id})
+                            let localPlaceLiked = localLikedPlaces.first(where: { $0.place_id == p.place_id})
+                            let localPlaceDisliked = localDislikedPlaces.first(where: { $0.place_id == p.place_id})
                             let ratedBefore = localPlaceLiked != nil || localPlaceDisliked != nil
                             if (ratedBefore) {
                                 let localPlace = localPlaceLiked != nil ? localPlaceLiked : localPlaceDisliked
-                                let updatedPlace = Place(origin: p, _isLiked: localPlace?.isLiked)
+                                let updatedPlace = Place(origin: localPlace!, _isLiked: localPlace?.isLiked)
                                 self.places.append(updatedPlace)
                             } else {
-                                self.places.append(p)
+                                self.places.append(Place(origin: p, _isLiked: nil))
                             }
                         } else {
                             let fireBaseUserID = self.auth.firebaseUser!.uid
-                            self.firebaseRdRef.child("users/\(fireBaseUserID)/ratings/\(p.googlePlaceId!)/liked").getData { (error, snapshot) in
-                                if let error = error {
-                                    print("Error getting snapshot \(error)")
-                                    self.places.append(p)
-                                } else if snapshot.exists() {
-                                    let likeBoolValue = snapshot.value! as! Bool
-                                    print("Got snapshot \(snapshot) for place \(String(describing: p.googlePlaceId))")
-                                    self.places.append(Place(origin: p, _isLiked: likeBoolValue))
-                                } else {
-                                    print("No saved rating for place \(String(describing: p.googlePlaceId))")
-                                    self.places.append(p)
-                                }
-                            }
+                            
+                            self.firebaseRdRef
+                                .child("users/\(fireBaseUserID)/ratings/liked/\(p.place_id!)/")
+                                .getData(completion: { (error, snapshot) in
+                                    if (snapshot.exists()) {
+                                        print("Found saved liked rating for \(String(describing: p.place_id))")
+                                        self.places.append(Place(origin: p, _isLiked: true))
+                                    } else {
+                                        self.firebaseRdRef
+                                            .child("users/\(fireBaseUserID)/ratings/disliked/\(p.place_id!)/")
+                                            .getData(completion: { (error, snapshot) in
+                                                if (snapshot.exists()) {
+                                                    print("Found saved disliked rating for \(String(describing: p.place_id))")
+                                                    self.places.append(Place(origin: p, _isLiked: false))
+                                                } else {
+                                                    print("No saved rating for \(String(describing: p.place_id))")
+                                                    self.places.append(p)
+                                                }
+                                            })
+                                    }
+                                })
                         }
                     }
                 }
@@ -120,28 +130,25 @@ class PlacesListModel: ObservableObject {
             let fireBaseUserID = auth.firebaseUser!.uid
             
             // save place if not exist
-            firebaseRdRef.child("places/\(place.googlePlaceId!)/").observeSingleEvent(of: .value, with: { (snapshot) in
+            firebaseRdRef.child("places/\(place.place_id!)/").observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.exists() {
-                    print("\(place.googlePlaceId!) place already exist in fb storate")
+                    // todo update if was not updated for long time
+                    print("\(place.place_id!) place already exist in fb storate")
                 } else {
-                    print("Saving new place \(place.googlePlaceId!) to fb storage")
-                    // todo update after switiching to Places SDK
-                    let savedPlaceDict = [
-                        "googleId" : place.googlePlaceId!,
-                        "coordinates" : "55.765070,37.605271", // todo placeholder, replace
-                        "name" : place.name!
-                    ] as [String : Any]
-                    self.firebaseRdRef.child("places/\(place.googlePlaceId!)/").setValue(savedPlaceDict)
+                    print("Saving new place \(place) to fb storage")
+                    let savedPlaceDict = place.asDictionary()
+                    self.firebaseRdRef.child("places/\(place.place_id!)/").setValue(savedPlaceDict)
                 }
             })
-    
+            
             // remove if exist in opposite rating collection
             firebaseRdRef
-                .child("users/\(fireBaseUserID)/ratings/\(rate ? "disliked" : "liked")/\(place.googlePlaceId!)").removeValue()
+                .child("users/\(fireBaseUserID)/ratings/\(rate ? "disliked" : "liked")/\(place.place_id!)")
+                .removeValue()
             
             // save rating
             firebaseRdRef
-                .child("users/\(fireBaseUserID)/ratings/\(rate ? "liked" : "disliked")/\(place.googlePlaceId!)")
+                .child("users/\(fireBaseUserID)/ratings/\(rate ? "liked" : "disliked")/\(place.place_id!)")
                 .setValue(["date": Date().currentTimeMillis()])
         }
     }
@@ -151,11 +158,13 @@ class PlacesListModel: ObservableObject {
     private func getPlaces(nextPageToken: String?,
                            lat: CLLocationDegrees, lng: CLLocationDegrees,
                            _ completion: @escaping (PlacesResponse?) -> ()) {
-        var urlComps = URLComponents(string: "https://hungries-api.herokuapp.com/places")!
-        let fireBaseUserID = (auth.firebaseUser != nil) ? auth.firebaseUser!.uid : ""
+        var urlComps = URLComponents(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json")!
+        
         urlComps.queryItems = [URLQueryItem(name: "radius", value: String(searchRadius)),
-                               URLQueryItem(name: "device", value: fireBaseUserID),
-                               URLQueryItem(name: "coordinates", value: String(lat) + "," + String(lng)),]
+                               URLQueryItem(name: "location", value: String(lat) + "," + String(lng)),
+                               URLQueryItem(name: "type", value: "restaurant"),
+                               URLQueryItem(name: "key", value: Bundle.main.infoDictionary!["GMS_SERVICES_API_KEY"] as? String),]
+        
         if (nextPageToken != nil) {
             urlComps.queryItems?.append(URLQueryItem(name: "pagetoken", value: nextPageToken!))
         }
@@ -164,10 +173,8 @@ class PlacesListModel: ObservableObject {
             print("Invalid URL")
             return
         }
+        
         var request = URLRequest(url: url)
-        let toEncode = "\(apiUserName):\(apiPassword)"
-        let encoded = toEncode.data(using: .utf8)?.base64EncodedString()
-        request.addValue("Basic \(encoded!)", forHTTPHeaderField: "Authorization")
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
             guard let data = data else {
@@ -189,20 +196,20 @@ class PlacesListModel: ObservableObject {
         var currentLikedPlaces = getPlacesFromUserDefaults(key: "likedPlaces")
         var currentDislikedPlaces = getPlacesFromUserDefaults(key: "dislikedPlaces")
         
-        let placeId = place.id!
+        let placeId = place.place_id!
         let updatedPlace = Place(origin: place, _isLiked: rate)
         
         // update list: remove or add new
         if (!rate) {
             // check if exist in liked and remove, add to disliked
-            currentLikedPlaces = currentLikedPlaces.filter { $0.id != placeId }
-            if (!currentDislikedPlaces.contains { $0.id == placeId }) {
+            currentLikedPlaces = currentLikedPlaces.filter { $0.place_id != placeId }
+            if (!currentDislikedPlaces.contains { $0.place_id == placeId }) {
                 currentDislikedPlaces.append(updatedPlace)
             }
         } else {
             // remove from disliked
-            currentDislikedPlaces = currentDislikedPlaces.filter { $0.id != placeId }
-            if (!currentLikedPlaces.contains { $0.id == placeId }) {
+            currentDislikedPlaces = currentDislikedPlaces.filter { $0.place_id != placeId }
+            if (!currentLikedPlaces.contains { $0.place_id == placeId }) {
                 currentLikedPlaces.append(updatedPlace)
             }
         }

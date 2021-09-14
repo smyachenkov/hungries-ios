@@ -7,40 +7,84 @@
 
 import Foundation
 
-struct PlacesResponse : Decodable {
-    let places: [Place]?
-    let nextPageToken: String?
+
+// todo switch to this struct in views
+// place with data for current session - likes and ratings
+struct LocalizedPlace: Hashable {
+    let place: Place
+    let isLiked: Bool?
+    let distance: Int?
 }
 
-struct Place: Encodable, Decodable, Hashable {
-    let id : Int?
-    let googlePlaceId : String?
-    let name : String?
-    let url : String?
-    let distance : Int?
-    let photoUrl : String?
-    let isLiked : Bool?
+
+// Google Places API response models
+struct PlacesResponse : Codable {
+    let results: [Place]?
+    let next_page_token: String?
+}
+
+struct Place: Codable, Hashable {
+    let place_id: String?
+    let name: String?
+    let rating: Double?
+    let vicinity: String?
+    let geometry: GeometryModel?
+    
+    // todo move from model into different class
+    let isLiked: Bool?
+    let distance: Int?
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(googlePlaceId)
-        hasher.combine(name)
-        hasher.combine(url)
-        hasher.combine(distance)
-        hasher.combine(photoUrl)
-        hasher.combine(isLiked)
+        hasher.combine(place_id)
     }
-    
 }
 
+struct GeometryModel: Codable, Hashable {
+    let location: LocationModel?
+}
+
+struct LocationModel: Codable, Hashable {
+    let lat: Double?
+    let lng: Double?
+}
+
+struct OpeningHoursModel: Codable {
+    let open_now: Bool?
+}
+
+struct PhotoModel: Codable, Hashable {
+    let photo_reference: String?
+}
+
+
+// todo replace with other class or something else
 extension Place {
     init(origin: Place, _isLiked: Bool?) {
-        id = origin.id
-        googlePlaceId = origin.googlePlaceId
+        place_id = origin.place_id
         name = origin.name
-        url = origin.url
+        rating = origin.rating
+        vicinity = origin.vicinity
+        geometry = origin.geometry
+        
+        // extra fields
         distance = origin.distance
-        photoUrl = origin.photoUrl
         isLiked = _isLiked
+        
+    }
+    
+    func asDictionary() -> [String : Any] {
+        return [
+            "place_id" : self.place_id!,
+            "name" : self.name!,
+            "rating": self.rating ?? 0.0,
+            "vicinity": self.vicinity ?? "",
+            "geometry": [
+                "location": [
+                    "lat": self.geometry?.location?.lat,
+                    "lng": self.geometry?.location?.lng
+                ]
+            ]
+        ] as [String : Any]
     }
 }
+

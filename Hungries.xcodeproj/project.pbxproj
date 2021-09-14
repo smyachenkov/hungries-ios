@@ -162,12 +162,12 @@
 		D6C53FA62670B41B001FB93F = {
 			isa = PBXGroup;
 			children = (
+				B4AE488F5C11D903A66D3B77 /* Frameworks */,
 				D6C53FB12670B41B001FB93F /* Hungries */,
 				D6C53FC32670B41D001FB93F /* HungriesTests */,
 				D6C53FCE2670B41D001FB93F /* HungriesUITests */,
-				D6C53FB02670B41B001FB93F /* Products */,
 				486E7D5B7945618F4D3C7F52 /* Pods */,
-				B4AE488F5C11D903A66D3B77 /* Frameworks */,
+				D6C53FB02670B41B001FB93F /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -184,9 +184,8 @@
 		D6C53FB12670B41B001FB93F /* Hungries */ = {
 			isa = PBXGroup;
 			children = (
-				D63D5E8326E52D9A003006D6 /* UserSettings */,
-				D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */,
 				D658390926A5C74000812BC2 /* Hungries.entitlements */,
+				D6575A6426D3EC7300F91F5F /* HungriesRelease.entitlements */,
 				D66E5D2626CC4048003E70BA /* GoogleService-Info.plist */,
 				D6C53FBB2670B41D001FB93F /* Info.plist */,
 				D6C53FB42670B41B001FB93F /* ContentView.swift */,
@@ -200,6 +199,7 @@
 				D6127CCB26727927004C03B0 /* Cards */,
 				D6CDB7C526789FD0004393A3 /* LikedPlaces */,
 				D6C53FB82670B41D001FB93F /* Preview Content */,
+				D63D5E8326E52D9A003006D6 /* UserSettings */,
 			);
 			path = Hungries;
 			sourceTree = "<group>";
