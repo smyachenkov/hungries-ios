@@ -91,8 +91,7 @@ struct ContentView: View {
             
             VStack {
                 if (loc.selectedLocation != nil) {
-                    let place = placesListModel.getCurrentPlace()
-                    
+                    let localizedPlace = placesListModel.getCurrentPlace()
                     if !placesListModel.isLoaded {
                         LoadingCardView()
                     } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
@@ -104,13 +103,13 @@ struct ContentView: View {
                                 )
                             }
                         )
-                    } else if place != nil {
+                    } else if localizedPlace != nil {
                         CardView(
-                            place: place!,
+                            localizedPlace: localizedPlace!,
                             onSwipe: {
                                 (liked: Bool) -> ()  in
                                 let place = placesListModel.getCurrentPlace()!
-                                self.placesListModel.ratePlace(place: place, rate: liked)
+                                self.placesListModel.ratePlace(place: place.place, rate: liked)
                                 self.placesListModel.nextPlace()
                             }
                         )
@@ -123,7 +122,7 @@ struct ContentView: View {
             HStack {
                 Button(action: {
                     let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(place: place, rate: false)
+                    self.placesListModel.ratePlace(place: place.place, rate: false)
                     self.placesListModel.nextPlace()
                 }) {
                     Image(systemName: "xmark")
@@ -204,8 +203,8 @@ struct ContentView: View {
                 }
                 
                 Button(action: {
-                    let place = placesListModel.getCurrentPlace()!
-                    self.placesListModel.ratePlace(place: place, rate: true)
+                    let localizedPlace = placesListModel.getCurrentPlace()!
+                    self.placesListModel.ratePlace(place: localizedPlace.place, rate: true)
                     self.placesListModel.nextPlace()
                 }) {
                     Image(systemName: "checkmark")

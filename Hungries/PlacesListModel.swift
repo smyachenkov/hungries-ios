@@ -18,7 +18,7 @@ class PlacesListModel: ObservableObject {
     
     let apiPassword = Bundle.main.infoDictionary!["HUNGRIES_API_PASSWORD"] as! String
     
-    @Published var places = [Place]()
+    @Published var places = [LocalizedPlace]()
     
     @Published var hasNextPage = false
     
@@ -37,7 +37,7 @@ class PlacesListModel: ObservableObject {
     
     private var firebaseRdRef = Database.database().reference()
     
-    public func getCurrentPlace() -> Place? {
+    public func getCurrentPlace() -> LocalizedPlace? {
         if (!fetchedFirstBatch) {
             fetchPlaces(
                 nextPageToken: nil,
@@ -81,16 +81,25 @@ class PlacesListModel: ObservableObject {
                     let localDislikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "dislikedPlaces")
                     
                     response.results?.forEach { p in
+                        let distanceTo = self.loc.distanceFrom(place: p)
+
+                        // todo calculate distance
                         if (!self.auth.isLoggedIn()) {
                             let localPlaceLiked = localLikedPlaces.first(where: { $0.place_id == p.place_id})
                             let localPlaceDisliked = localDislikedPlaces.first(where: { $0.place_id == p.place_id})
                             let ratedBefore = localPlaceLiked != nil || localPlaceDisliked != nil
                             if (ratedBefore) {
-                                let localPlace = localPlaceLiked != nil ? localPlaceLiked : localPlaceDisliked
-                                let updatedPlace = Place(origin: localPlace!, _isLiked: localPlace?.isLiked)
-                                self.places.append(updatedPlace)
+                                self.places.append(
+                                    LocalizedPlace(
+                                        place: (localPlaceLiked != nil ? localPlaceLiked : localPlaceDisliked)!,
+                                        isLiked: localPlaceLiked != nil,
+                                        distance: distanceTo
+                                    )
+                                )
                             } else {
-                                self.places.append(Place(origin: p, _isLiked: nil))
+                                self.places.append(
+                                    LocalizedPlace(place: p, isLiked: nil, distance: distanceTo)
+                                )
                             }
                         } else {
                             let fireBaseUserID = self.auth.firebaseUser!.uid
@@ -100,17 +109,17 @@ class PlacesListModel: ObservableObject {
                                 .getData(completion: { (error, snapshot) in
                                     if (snapshot.exists()) {
                                         print("Found saved liked rating for \(String(describing: p.place_id))")
-                                        self.places.append(Place(origin: p, _isLiked: true))
+                                        self.places.append(LocalizedPlace(place: p, isLiked: true, distance: distanceTo))
                                     } else {
                                         self.firebaseRdRef
                                             .child("users/\(fireBaseUserID)/ratings/disliked/\(p.place_id!)/")
                                             .getData(completion: { (error, snapshot) in
                                                 if (snapshot.exists()) {
                                                     print("Found saved disliked rating for \(String(describing: p.place_id))")
-                                                    self.places.append(Place(origin: p, _isLiked: false))
+                                                    self.places.append(LocalizedPlace(place: p, isLiked: false, distance: distanceTo))
                                                 } else {
                                                     print("No saved rating for \(String(describing: p.place_id))")
-                                                    self.places.append(p)
+                                                    self.places.append(LocalizedPlace(place: p, isLiked: nil, distance: distanceTo))
                                                 }
                                             })
                                     }

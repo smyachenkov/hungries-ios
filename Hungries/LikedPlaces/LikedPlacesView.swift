@@ -9,15 +9,15 @@ import SwiftUI
 
 class LikedList: ObservableObject {
     
-    @Published var data: [Place] = [Place]()
+    @Published var data: [LocalizedPlace] = [LocalizedPlace]()
     
-    init(data: [Place]) {
+    init(data: [LocalizedPlace]) {
         self.data = data
     }
     
     func deleteById(placeId: String) {
-        self.data = data.filter { place in
-            return place.place_id != placeId
+        self.data = data.filter { p in
+            return p.place.place_id != placeId
         }
     }
 }
@@ -34,7 +34,7 @@ struct LikedPlacesView: View {
         
     @Environment(\.colorScheme) var colorScheme
     
-    init(places: [Place], sendRemoveAction: @escaping (Place) -> Void) {
+    init(places: [LocalizedPlace], sendRemoveAction: @escaping (Place) -> Void) {
         self.places = LikedList(data: places)
         self.sendRemoveAction = sendRemoveAction
     }
@@ -50,28 +50,27 @@ struct LikedPlacesView: View {
                 //VStack(spacing: 10) {
                 //https://stackoverflow.com/questions/60009646/mysterious-spacing-or-padding-in-elements-in-a-vstack-in-a-scrollview-in-swiftui
                 VStack(spacing: 0) {
-                    ForEach(self.places.data, id: \.self) { place in
+                    ForEach(self.places.data, id: \.self) { localizedPlace in
                         HStack {
                             // place info
                             HStack {
                                 Link(
                                     // todo use name in query instead of Google value
                                     // todo move to common class
-                                    destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + place.place_id!)!,
+                                    destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + localizedPlace.place.place_id!)!,
                                     label: {
-                                        Text(place.name!).underline()
+                                        Text(localizedPlace.place.name!).underline()
                                      })
                                 Spacer()
                             
-                                let distance = location.distanceFrom(place: place)
-                                Text("\(distance)m")
+                                Text("\(localizedPlace.distance!)m")
                             }
                             
                             Spacer()
                             
                             // remove liked place button
                             Button(action: {
-                                lastClickedPlace = place
+                                lastClickedPlace = localizedPlace.place
                                 showRemoveDialog.toggle()
                             }) {
                                 Image(systemName: "xmark")
@@ -105,8 +104,16 @@ struct LikedPlacesView_Previews: PreviewProvider {
     
     static var previews: some View {
         let testPlaces = [
-            Place(place_id: "1", name: "Perfect Pizza", rating: 5.0, vicinity: "Rome", geometry: nil, isLiked: true, distance: nil),
-            Place(place_id: "2", name: "Crispy Coffee", rating: 5.0, vicinity: "Paris", geometry: nil, isLiked: true, distance: nil)
+            LocalizedPlace(
+                place: Place(place_id: "1", name: "Perfect Pizza", rating: 5.0, vicinity: "Paris", geometry: nil),
+                isLiked: true,
+                distance: 100
+            ),
+            LocalizedPlace(
+                place: Place(place_id: "2", name: "Crispy Coffee", rating: 5.0, vicinity: "Colorado", geometry: nil),
+                isLiked: false,
+                distance: 200
+            )
         ]
         ForEach(ColorScheme.allCases, id: \.self) {
             LikedPlacesView(

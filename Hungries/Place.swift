@@ -8,8 +8,7 @@
 import Foundation
 
 
-// todo switch to this struct in views
-// place with data for current session - likes and ratings
+// place with data for current session and user
 struct LocalizedPlace: Hashable {
     let place: Place
     let isLiked: Bool?
@@ -29,10 +28,6 @@ struct Place: Codable, Hashable {
     let rating: Double?
     let vicinity: String?
     let geometry: GeometryModel?
-    
-    // todo move from model into different class
-    let isLiked: Bool?
-    let distance: Int?
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(place_id)
@@ -56,8 +51,6 @@ struct PhotoModel: Codable, Hashable {
     let photo_reference: String?
 }
 
-
-// todo replace with other class or something else
 extension Place {
     init(origin: Place, _isLiked: Bool?) {
         place_id = origin.place_id
@@ -65,11 +58,6 @@ extension Place {
         rating = origin.rating
         vicinity = origin.vicinity
         geometry = origin.geometry
-        
-        // extra fields
-        distance = origin.distance
-        isLiked = _isLiked
-        
     }
     
     func asDictionary() -> [String : Any] {

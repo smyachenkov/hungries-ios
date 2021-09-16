@@ -17,7 +17,7 @@ class LikedPlacesListModel: ObservableObject {
     
     let apiPassword = Bundle.main.infoDictionary!["HUNGRIES_API_PASSWORD"] as! String
     
-    @Published var places = [Place]()
+    @Published var places = [LocalizedPlace]()
     
     @Published var isLoaded = false
     
@@ -65,11 +65,16 @@ class LikedPlacesListModel: ObservableObject {
                                                     lat: placeSnapshotVal?.value(forKeyPath: "geometry.location.lat") as? Double,
                                                     lng: placeSnapshotVal?.value(forKeyPath: "geometry.location.lng") as? Double
                                                 )
-                                            ),
-                                            isLiked: true,
-                                            distance: nil
+                                            )
                                         )
-                                        self.places.append(place)
+                                        let distanceTo = location.distanceFrom(place: place)
+                                        self.places.append(
+                                            LocalizedPlace(
+                                                place: place,
+                                                isLiked: true,
+                                                distance: distanceTo
+                                            )
+                                        )
                                     } else {
                                         print("can't find saved place \(placeId)")
                                     }
@@ -87,7 +92,17 @@ class LikedPlacesListModel: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: "likedPlaces") {
             do {
                 let decoder = JSONDecoder()
-                self.places = try decoder.decode([Place].self, from: data)
+                let storedPlaces = try decoder.decode([Place].self, from: data)
+                storedPlaces.forEach {p in
+                    let distanceTo = location.distanceFrom(place: p)
+                    self.places.append(
+                        LocalizedPlace(
+                            place: p,
+                            isLiked: true,
+                            distance: distanceTo
+                        )
+                    )
+                }
             } catch {
                 print("Unable to Decode Places (\(error))")
             }

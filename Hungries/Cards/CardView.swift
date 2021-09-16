@@ -20,7 +20,7 @@ struct CardView: View {
     
     @Environment(\.colorScheme) var colorScheme
 
-    private var place: Place
+    private var localizedPlace: LocalizedPlace
         
     private var thresholdPercentage: CGFloat = 0.4
     
@@ -30,10 +30,10 @@ struct CardView: View {
         case like, dislike, none
     }
 
-    init(place: Place, onSwipe: @escaping (Bool) -> Void) {
-        self.place = place
+    init(localizedPlace: LocalizedPlace, onSwipe: @escaping (Bool) -> Void) {
+        self.localizedPlace = localizedPlace
         self.onSwipe = onSwipe
-        self.imageLoader = ImageLoader(googlePlaceId: place.place_id)
+        self.imageLoader = ImageLoader(googlePlaceId: localizedPlace.place.place_id)
         // todo move to onAppear()
         imageLoader.load()
     }
@@ -81,15 +81,14 @@ struct CardView: View {
                                     .aspectRatio(contentMode: .fit)
                             }
                             
-                            Text(self.place.name!)
+                            Text(self.localizedPlace.place.name!)
                                 .frame(width: geometry.size.width)
                             
                             HStack {
-                                let distance = location.distanceFrom(place: place)
-                                Text("Distance: \(distance)m")
+                                Text("Distance: \(localizedPlace.distance!)m")
                                     .padding()
                                 // todo move to common class
-                                Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + place.place_id!)!,
+                                Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + localizedPlace.place.place_id!)!,
                                      label: {
                                         Text("Open in maps").underline()
                                      }).padding()
@@ -104,8 +103,8 @@ struct CardView: View {
                                 
                                 // todo replace with hand.thumbsup.circle
                                 // todo display for unauthorized users too
-                                if (self.place.isLiked != nil) {
-                                    if (self.place.isLiked!) {
+                                if (self.localizedPlace.isLiked != nil) {
+                                    if (self.localizedPlace.isLiked!) {
                                         Image(systemName: "hand.thumbsup.fill")
                                             .foregroundColor(.green)
                                             .font(.system(size: 32))
