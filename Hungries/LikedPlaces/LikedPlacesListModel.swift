@@ -28,7 +28,7 @@ class LikedPlacesListModel: ObservableObject {
     init() {
     }
     
-    public func fetchLikedPlaces(lat: CLLocationDegrees, lng: CLLocationDegrees) {
+    public func fetchLikedPlaces() {
         self.isLoaded = false
         self.places.removeAll()
         if (auth.isLoggedIn()) {

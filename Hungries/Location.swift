@@ -13,8 +13,11 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
 
     private let locationManager = CLLocationManager()
     var locationStatus: CLAuthorizationStatus?
+    
+    // location of device
     var lastLocation: CLLocation?
     
+    // last observed or last selected by user
     @Published var selectedLocation: CLLocation?
     
     override init() {

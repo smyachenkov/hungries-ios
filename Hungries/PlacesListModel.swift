@@ -28,9 +28,7 @@ class PlacesListModel: ObservableObject {
     
     // default value before it's changed in settings
     @AppStorage(SETTINGS_KEY_SEARCH_RADIUS) var searchRadius: Int = 500
-    
-    var loc = location
-    
+        
     var nextPageToken: String?
     
     private var fetchedFirstBatch = false;
@@ -41,8 +39,8 @@ class PlacesListModel: ObservableObject {
         if (!fetchedFirstBatch) {
             fetchPlaces(
                 nextPageToken: nil,
-                lat: loc.selectedLocation!.coordinate.latitude,
-                lng: loc.selectedLocation!.coordinate.longitude
+                lat: location.selectedLocation!.coordinate.latitude,
+                lng: location.selectedLocation!.coordinate.longitude
             )
             fetchedFirstBatch = true
         }
@@ -57,13 +55,15 @@ class PlacesListModel: ObservableObject {
         places.removeFirst()
         if (places.isEmpty && !(nextPageToken ?? "").isEmpty) {
             fetchPlaces(nextPageToken: self.nextPageToken,
-                        lat: loc.selectedLocation!.coordinate.latitude,
-                        lng: loc.selectedLocation!.coordinate.longitude)
+                        lat: location.selectedLocation!.coordinate.latitude,
+                        lng: location.selectedLocation!.coordinate.longitude)
         }
     }
     
-    public func fetchPlacesForNewLocation(lat: CLLocationDegrees, lng: CLLocationDegrees) {
+    public func fetchPlacesForNewLocation() {
         places.removeAll()
+        let lat = location.selectedLocation!.coordinate.latitude
+        let lng = location.selectedLocation!.coordinate.longitude
         fetchPlaces(nextPageToken: nil, lat: lat, lng: lng)
     }
     
@@ -81,7 +81,7 @@ class PlacesListModel: ObservableObject {
                     let localDislikedPlaces = self.auth.isLoggedIn() ? [Place]() : self.getPlacesFromUserDefaults(key: "dislikedPlaces")
                     
                     response.results?.forEach { p in
-                        let distanceTo = self.loc.distanceFrom(place: p)
+                        let distanceTo = location.distanceFrom(place: p)
 
                         // todo calculate distance
                         if (!self.auth.isLoggedIn()) {

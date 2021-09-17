@@ -36,10 +36,7 @@ struct ContentView: View {
                 // saved
                 Button(action: {
                     self.showLikedList.toggle()
-                    self.likedPlacesListModel.fetchLikedPlaces(
-                        lat: loc.selectedLocation!.coordinate.latitude,
-                        lng: loc.selectedLocation!.coordinate.longitude
-                    )
+                    self.likedPlacesListModel.fetchLikedPlaces()
                 }) {
                     Image(systemName: "list.bullet")
                         .padding(3)
@@ -80,10 +77,7 @@ struct ContentView: View {
                     } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
                         LastCardView(
                             reloadAction: {
-                                self.placesListModel.fetchPlacesForNewLocation(
-                                    lat: loc.selectedLocation!.coordinate.latitude,
-                                    lng: loc.selectedLocation!.coordinate.longitude
-                                )
+                                self.placesListModel.fetchPlacesForNewLocation()
                             }
                         )
                     } else if localizedPlace != nil {
@@ -128,10 +122,7 @@ struct ContentView: View {
                     if (loc.lastLocation != nil) {
                         ChooseLocationView(
                             onNewLocation: {
-                                self.placesListModel.fetchPlacesForNewLocation(
-                                    lat: loc.selectedLocation!.coordinate.latitude,
-                                    lng: loc.selectedLocation!.coordinate.longitude
-                                )
+                                self.placesListModel.fetchPlacesForNewLocation()
                                 self.showMapsPicker = false
                             },
                             onCancel: {
