@@ -12,6 +12,7 @@ target 'Hungries' do
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
   pod 'Firebase/Database'
+  pod 'SwiftyBeaver'
   target 'HungriesTests' do
     inherit! :search_paths
     # Pods for testing

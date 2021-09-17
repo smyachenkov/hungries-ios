@@ -487,6 +487,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (2.0.0)
+  - SwiftyBeaver (1.9.5)
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -495,6 +496,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - GoogleMaps (= 5.0.0)
   - GooglePlaces (= 5.0.0)
+  - SwiftyBeaver
 
 SPEC REPOS:
   trunk:
@@ -519,6 +521,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - SwiftyBeaver
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -542,7 +545,8 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
 
-PODFILE CHECKSUM: 9510d9e679478982541be31d05d8c808e7d863b4
+PODFILE CHECKSUM: bd23499a1cd0819a6ab6470c69f4a9a6b9b99948
 
 COCOAPODS: 1.11.0.beta.2

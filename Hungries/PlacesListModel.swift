@@ -108,17 +108,17 @@ class PlacesListModel: ObservableObject {
                                 .child("users/\(fireBaseUserID)/ratings/liked/\(p.place_id!)/")
                                 .getData(completion: { (error, snapshot) in
                                     if (snapshot.exists()) {
-                                        print("Found saved liked rating for \(String(describing: p.place_id))")
+                                        log.info("Found saved liked rating for place", context: p.place_id)
                                         self.places.append(LocalizedPlace(place: p, isLiked: true, distance: distanceTo))
                                     } else {
                                         self.firebaseRdRef
                                             .child("users/\(fireBaseUserID)/ratings/disliked/\(p.place_id!)/")
                                             .getData(completion: { (error, snapshot) in
                                                 if (snapshot.exists()) {
-                                                    print("Found saved disliked rating for \(String(describing: p.place_id))")
+                                                    log.info("Found saved disliked rating for place", context: p.place_id)
                                                     self.places.append(LocalizedPlace(place: p, isLiked: false, distance: distanceTo))
                                                 } else {
-                                                    print("No saved rating for \(String(describing: p.place_id))")
+                                                    log.info("No saved rating for place", context: p.place_id)
                                                     self.places.append(LocalizedPlace(place: p, isLiked: nil, distance: distanceTo))
                                                 }
                                             })
@@ -142,9 +142,9 @@ class PlacesListModel: ObservableObject {
             firebaseRdRef.child("places/\(place.place_id!)/").observeSingleEvent(of: .value, with: { (snapshot) in
                 if snapshot.exists() {
                     // todo update if was not updated for long time
-                    print("\(place.place_id!) place already exist in fb storate")
+                    log.info("Place already exist in fb storate", context: place.place_id)
                 } else {
-                    print("Saving new place \(place) to fb storage")
+                    log.info("Saving new place to fb storage", context: place)
                     let savedPlaceDict = place.asDictionary()
                     self.firebaseRdRef.child("places/\(place.place_id!)/").setValue(savedPlaceDict)
                 }
@@ -179,10 +179,10 @@ class PlacesListModel: ObservableObject {
         }
         
         guard let url = URL(string: urlComps.url!.absoluteString) else {
-            print("Invalid URL")
+            log.error("Invalid URL")
             return
         }
-        
+                
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
@@ -194,7 +194,7 @@ class PlacesListModel: ObservableObject {
                 let placesResp = try jsonDecoder.decode(PlacesResponse.self, from: data)
                 completion(placesResp)
             } catch {
-                print(error)
+                log.error("error parsing nearby search response", context: error)
                 completion(nil)
             }
         }).resume()
@@ -233,7 +233,7 @@ class PlacesListModel: ObservableObject {
             let dislikedPlacesJson = try encoder.encode(currentLikedPlaces)
             UserDefaults.standard.set(dislikedPlacesJson, forKey: "dislikedPlaces")
         } catch {
-            print("Unable to Encode Array of Places (\(error))")
+            log.error("Unable to Encode Array of Places",  context: error)
         }
     }
     
@@ -244,7 +244,7 @@ class PlacesListModel: ObservableObject {
                 let decoder = JSONDecoder()
                 currentPlaces = try decoder.decode([Place].self, from: data)
             } catch {
-                print("Unable to Decode Places (\(error))")
+                log.error("Unable to Decode places from defaults", context: error)
             }
         }
         return currentPlaces;

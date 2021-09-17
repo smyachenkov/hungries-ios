@@ -28,7 +28,7 @@ class ImageLoader: ObservableObject {
                                                 sessionToken: nil) {
                 (place: GMSPlace?, error: Error?) in
                 if let error = error {
-                    print("Error requesting photos: \(error.localizedDescription)")
+                    log.error("Error requesting photos", context: error.localizedDescription)
                     return
                 }
                 if let place = place {
@@ -39,7 +39,7 @@ class ImageLoader: ObservableObject {
                     let firstPhotoMetaData: GMSPlacePhotoMetadata = place.photos![0]
                     GMSPlacesClient.shared().loadPlacePhoto(firstPhotoMetaData, callback: { (photo, error) -> Void in
                         if let error = error {
-                            print("Error loading photo metadata: \(error.localizedDescription)")
+                            log.error("Error loading photo metadata", context: error.localizedDescription)
                             return
                         } else {
                             self.image = photo

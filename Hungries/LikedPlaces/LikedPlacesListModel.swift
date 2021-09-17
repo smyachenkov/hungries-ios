@@ -76,13 +76,13 @@ class LikedPlacesListModel: ObservableObject {
                                             )
                                         )
                                     } else {
-                                        print("can't find saved place \(placeId)")
+                                        log.info("can't find saved place", context: placeId)
                                     }
                                 })
                         }
                     }
                 } else {
-                    print("No liked places for user \(fireBaseUserID)")
+                    log.info("No liked places for user", context: fireBaseUserID)
                 }
                 self.isLoaded = true
             })
@@ -104,7 +104,7 @@ class LikedPlacesListModel: ObservableObject {
                     )
                 }
             } catch {
-                print("Unable to Decode Places (\(error))")
+                log.info("Unable to Decode Places", context: error)
             }
             self.isLoaded = true
         }

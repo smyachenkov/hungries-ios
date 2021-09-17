@@ -41,7 +41,7 @@ struct AuthScreenView: View {
                                 fatalError("Invalid state: A login callback was received, but no login request was sent.")
                             }
                             guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
-                                print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                                log.error("Unable to serialize token string", context: appleIDToken.debugDescription)
                                 return
                             }
                             
@@ -51,10 +51,10 @@ struct AuthScreenView: View {
                                     // Error. If error.code == .MissingOrInvalidNonce, make sure
                                     // you're sending the SHA256-hashed nonce as a hex string with
                                     // your request to Apple.
-                                    print(error?.localizedDescription as Any)
+                                    log.error(error?.localizedDescription as Any)
                                     return
                                 }
-                                print("signed in")
+                                log.info("signed in")
                             }
                             authState.authChecked = true
                             authState.firebaseUser = Auth.auth().currentUser
