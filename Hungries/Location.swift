@@ -15,7 +15,7 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
     var locationStatus: CLAuthorizationStatus?
     
     // location of device
-    var lastLocation: CLLocation?
+    @Published var lastDeviceLocation: CLLocation?
     
     // last observed or last selected by user
     @Published var selectedLocation: CLLocation?
@@ -48,9 +48,9 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        lastLocation = location
+        lastDeviceLocation = location
         if (selectedLocation == nil) {
-            selectedLocation = lastLocation
+            selectedLocation = lastDeviceLocation
         }
     }
     

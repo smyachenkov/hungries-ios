@@ -23,7 +23,13 @@ struct GoogleMapsView: UIViewRepresentable {
         return mapView
     }
     
+    // move to last selected location
     func updateUIView(_ mapView: GMSMapView, context: Context) {
+        if let targetLoc = location.selectedLocation {
+            let target = CLLocationCoordinate2D(latitude: targetLoc.coordinate.latitude, longitude: targetLoc.coordinate.longitude)
+            mapView.camera = GMSCameraPosition.camera(withTarget: target, zoom: 15)
+            mapView.animate(toLocation: targetLoc.coordinate)
+        }
     }
     
 }
@@ -39,8 +45,8 @@ struct ChooseLocationView: View {
         self.mapView = GMSMapView.map(
             withFrame: CGRect.zero,
             camera: GMSCameraPosition.camera(
-                withLatitude: location.lastLocation!.coordinate.latitude,
-                longitude: location.lastLocation!.coordinate.longitude,
+                withLatitude: location.lastDeviceLocation!.coordinate.latitude,
+                longitude: location.lastDeviceLocation!.coordinate.longitude,
                 zoom: 15.0
             )
         )
@@ -49,10 +55,9 @@ struct ChooseLocationView: View {
     }
     
     var body: some View {
-        
         ZStack {
             GoogleMapsView(mapView: mapView)
-            
+
             Image(systemName: "mappin")
                 .foregroundColor(.red)
                 .font(.system(size: 32))
@@ -75,6 +80,8 @@ struct ChooseLocationView: View {
                     // update location
                     let selectedLat = mapView.projection.coordinate(for: mapView.center).latitude
                     let selectedLng = mapView.projection.coordinate(for: mapView.center).longitude
+                    
+                    log.debug("coordinates from map \(selectedLat), \(selectedLng)")
                     location.selectNewLocation(newLocation: CLLocation.init(latitude: selectedLat, longitude: selectedLng))
                     
                     // fetch new places

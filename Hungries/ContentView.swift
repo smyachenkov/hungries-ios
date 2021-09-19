@@ -119,7 +119,7 @@ struct ContentView: View {
                        onDismiss: {
                             self.showMapsPicker = false
                        }) {
-                    if (loc.lastLocation != nil) {
+                    if (loc.lastDeviceLocation != nil) {
                         ChooseLocationView(
                             onNewLocation: {
                                 self.placesListModel.fetchPlacesForNewLocation()

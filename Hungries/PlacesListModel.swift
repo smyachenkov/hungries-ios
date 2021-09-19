@@ -69,6 +69,7 @@ class PlacesListModel: ObservableObject {
     
     // todo convert place to new place struct with distance and likes
     public func fetchPlaces(nextPageToken: String?, lat: CLLocationDegrees, lng: CLLocationDegrees) {
+        log.info("Fetching places for location \(lat), \(lng)")
         self.isLoaded = false
         getPlaces(nextPageToken: nextPageToken, lat: lat, lng: lng) { response in
             DispatchQueue.main.async {
