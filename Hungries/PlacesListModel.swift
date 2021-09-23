@@ -128,6 +128,8 @@ class PlacesListModel: ObservableObject {
                         }
                     }
                 }
+                // hack to prevent last page view from rendering
+                usleep(3 * 100000)
                 self.isLoaded = true
             }
         }
@@ -178,12 +180,11 @@ class PlacesListModel: ObservableObject {
         if (nextPageToken != nil) {
             urlComps.queryItems?.append(URLQueryItem(name: "pagetoken", value: nextPageToken!))
         }
-        
         guard let url = URL(string: urlComps.url!.absoluteString) else {
             log.error("Invalid URL")
             return
         }
-                
+        log.info(url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         URLSession.shared.dataTask(with: request as URLRequest, completionHandler: { data, response, error in

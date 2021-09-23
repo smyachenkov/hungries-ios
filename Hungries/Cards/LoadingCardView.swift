@@ -27,10 +27,12 @@ struct LoadingCardView: View {
                 VStack(alignment: .leading) {
                     Text(message)
                         .frame(width: geometry.size.width)
+                    ProgressView()
+                        .frame(width: geometry.size.width)
+    
                 }
-                .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
+                .frame(width: geometry.size.width, height: geometry.size.height)
                 .padding(.bottom)
-                .cornerRadius(10)
             }
     }
 }
