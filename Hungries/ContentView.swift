@@ -119,6 +119,7 @@ struct ContentView: View {
                 }) {
                     Image(systemName: "map")
                 }.font(.title)
+                .isHidden(!auth.authChecked)
                 .frame(maxWidth: .infinity)
                 .sheet(isPresented: $showMapsPicker,
                        onDismiss: {
