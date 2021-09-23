@@ -43,6 +43,7 @@ struct ContentView: View {
                         .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }.font(.title)
                 .frame(maxWidth: .infinity)
+                .disabled(!loc.isLoaded)
                 .sheet(isPresented: $showLikedList) {
                     if (self.likedPlacesListModel.isLoaded) {
                         LikedPlacesView(
@@ -70,26 +71,30 @@ struct ContentView: View {
             }
             
             VStack {
-                if (loc.selectedLocation != nil) {
-                    let localizedPlace = placesListModel.getCurrentPlace()
-                    if !placesListModel.isLoaded {
-                        LoadingCardView()
-                    } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
-                        LastCardView(
-                            reloadAction: {
-                                self.placesListModel.fetchPlacesForNewLocation()
-                            }
-                        )
-                    } else if localizedPlace != nil {
-                        CardView(
-                            localizedPlace: localizedPlace!,
-                            onSwipe: {
-                                (liked: Bool) -> ()  in
-                                let place = placesListModel.getCurrentPlace()!
-                                self.placesListModel.ratePlace(place: place.place, rate: liked)
-                                self.placesListModel.nextPlace()
-                            }
-                        )
+                if (loc.selectedLocation == nil) {
+                    LoadingCardView(message: "Fetching location...")
+                } else
+                    if (loc.selectedLocation != nil) {
+                        let localizedPlace = placesListModel.getCurrentPlace()
+                        if !placesListModel.isLoaded {
+                            LoadingCardView(message: "Loading places...")
+                        } else if placesListModel.places.count == 0 && !placesListModel.hasNextPage {
+                            LastCardView(
+                                reloadAction: {
+                                    self.placesListModel.fetchPlacesForNewLocation()
+                                }
+                            )
+                        } else if localizedPlace != nil {
+                            CardView(
+                                localizedPlace: localizedPlace!,
+                                onSwipe: {
+                                    (liked: Bool) -> ()  in
+                                    let place = placesListModel.getCurrentPlace()!
+                                    self.placesListModel.ratePlace(place: place.place, rate: liked)
+                                    self.placesListModel.nextPlace()
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -145,7 +150,7 @@ struct ContentView: View {
             }
         }
     }
-}
+
 
 extension View {
     
@@ -161,7 +166,10 @@ extension View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    
     static var previews: some View {
-        ContentView()
+        ForEach(ColorScheme.allCases, id: \.self) {
+            ContentView().preferredColorScheme($0)
+        }
     }
 }

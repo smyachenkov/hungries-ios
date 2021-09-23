@@ -20,12 +20,17 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
     // last observed or last selected by user
     @Published var selectedLocation: CLLocation?
     
+    @Published var isLoaded = false
+    
     override init() {
         super.init()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
+        DispatchQueue.main.async {
+            self.locationManager.delegate = self
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            self.locationManager.requestWhenInUseAuthorization()
+            self.locationManager.requestLocation()
+            self.isLoaded = true
+        }
     }
     
     var statusString: String {
@@ -55,7 +60,7 @@ class Location: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        // todo handle error
+        log.error("Error requesting user's location", context: error.localizedDescription)
     }
     
     func selectNewLocation(newLocation: CLLocation) {

@@ -16,15 +16,30 @@ import GoogleMaps
 
 struct LoadingCardView: View {
 
+    private var message: String
+    
+    init(message: String) {
+        self.message = message
+    }
+    
     var body: some View {
         GeometryReader { geometry in
                 VStack(alignment: .leading) {
-                    Text("Loading...")
+                    Text(message)
                         .frame(width: geometry.size.width)
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height * 0.95)
                 .padding(.bottom)
                 .cornerRadius(10)
             }
+    }
+}
+
+struct LoadingCardView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        ForEach(ColorScheme.allCases, id: \.self) {
+            LoadingCardView(message: "Loading...").preferredColorScheme($0)
+        }
     }
 }
