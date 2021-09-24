@@ -19,17 +19,17 @@ struct CardView: View {
     @ObservedObject var imageLoader: ImageLoader
     
     @Environment(\.colorScheme) var colorScheme
-
+    
     private var localizedPlace: LocalizedPlace
-        
+    
     private var thresholdPercentage: CGFloat = 0.4
     
     private var onSwipe: (Bool) -> Void
-
+    
     private enum LikeDislike: Int {
         case like, dislike, none
     }
-
+    
     init(localizedPlace: LocalizedPlace, onSwipe: @escaping (Bool) -> Void) {
         self.localizedPlace = localizedPlace
         self.onSwipe = onSwipe
@@ -37,11 +37,11 @@ struct CardView: View {
         // todo move to onAppear()
         imageLoader.load()
     }
-
+    
     private func getGesturePercentage(_ geometry: GeometryProxy, from gesture: DragGesture.Value) -> CGFloat {
         gesture.translation.width / geometry.size.width
     }
-
+    
     
     @ViewBuilder
     var body: some View {
@@ -82,16 +82,40 @@ struct CardView: View {
                             }
                             
                             Text(self.localizedPlace.place.name!)
-                                .frame(width: geometry.size.width)
                             
                             HStack {
-                                Text("Distance: \(localizedPlace.distance!)m")
-                                    .padding()
-                                // todo move to common class
-                                Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + localizedPlace.place.place_id!)!,
-                                     label: {
-                                        Text("Open in maps").underline()
-                                     }).padding()
+                                
+                                VStack {
+                                    
+                                    // Main info
+                                    HStack {
+                                        // todo move to common class
+                                        Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + localizedPlace.place.place_id!)!,
+                                             label: {
+                                                Text("Open in maps").underline()
+                                             })
+                                        
+                                        Text("\(localizedPlace.distance!)m")
+                                            .padding(.trailing, 40)
+                                        
+                                        Spacer()
+                                        
+                                        if (localizedPlace.place.rating != nil) {
+                                            Text("\((localizedPlace.place.rating!).description)")
+                                            Image(systemName: "star.fill")
+                                        }
+                                    }
+                                    
+                                    Divider().padding(.horizontal, 10)
+                                    
+                                    // Address
+                                    HStack {
+                                        Text("\(localizedPlace.place.vicinity ?? "")")
+                                            .fixedSize(horizontal: false, vertical: true)
+                                        Spacer()
+                                    }
+                                    
+                                }.padding()
                             }.frame(width: geometry.size.width)
                         }
                         VStack {
@@ -153,6 +177,36 @@ struct CardView: View {
                 swipeStatus == .none ?
                     (colorScheme == .dark ? Color.black : Color.white) : (swipeStatus == .like ? Color.green : Color.red)
             )
+        }
+    }
+}
+
+
+struct CardView_Previews: PreviewProvider {
+    
+    static var previews: some View {
+        ForEach(ColorScheme.allCases, id: \.self) {
+            CardView(
+                localizedPlace: LocalizedPlace(
+                    place: Place(place_id: "123",
+                                 name: "Crispy Coffee",
+                                 rating: 4.5,
+                                 vicinity: "12, Carl st, Columbia, Canada",
+                                 geometry: GeometryModel(
+                                    location: LocationModel(
+                                        lat: 55.3454,
+                                        lng: 37.3123
+                                    )
+                                 )
+                    ),
+                    isLiked: true,
+                    distance: 100
+                ),
+                onSwipe: {
+                    (liked: Bool) -> ()  in
+                    print(liked)
+                }
+            ).preferredColorScheme($0)
         }
     }
 }
