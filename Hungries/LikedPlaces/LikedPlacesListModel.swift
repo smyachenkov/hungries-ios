@@ -40,7 +40,7 @@ class LikedPlacesListModel: ObservableObject {
     
     private func getLikedPlacesFromFirebase() {
         let fireBaseUserID = auth.firebaseUser!.uid
-    
+        
         firebaseRdRef
             .child("users/\(fireBaseUserID)/ratings/liked/")
             .observeSingleEvent(of: .value, with: { (snapshot) in
@@ -48,7 +48,7 @@ class LikedPlacesListModel: ObservableObject {
                     for child in snapshot.children {
                         if let childSnapshot = child as? DataSnapshot {
                             let placeId = childSnapshot.key
-
+                            
                             // fetch place from places collection
                             self.firebaseRdRef
                                 .child("places/\(placeId)")
@@ -84,6 +84,14 @@ class LikedPlacesListModel: ObservableObject {
                 } else {
                     log.info("No liked places for user", context: fireBaseUserID)
                 }
+                self.places.sort {
+                    if ($0.distance! == -1 && $1.distance! > 0) {
+                        return false
+                    } else if ($0.distance! > 0 && $1.distance! == -1) {
+                        return true
+                    }
+                    return $0.distance! < $1.distance!
+                }
                 self.isLoaded = true
             })
     }
@@ -105,6 +113,14 @@ class LikedPlacesListModel: ObservableObject {
                 }
             } catch {
                 log.info("Unable to Decode Places", context: error)
+            }
+            self.places.sort {
+                if ($0.distance! == -1 && $1.distance! > 0) {
+                    return false
+                } else if ($0.distance! > 0 && $1.distance! == -1) {
+                    return true
+                }
+                return $0.distance! < $1.distance!
             }
             self.isLoaded = true
         }
