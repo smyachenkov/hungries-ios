@@ -84,14 +84,6 @@ class LikedPlacesListModel: ObservableObject {
                 } else {
                     log.info("No liked places for user", context: fireBaseUserID)
                 }
-                self.places.sort {
-                    if ($0.distance! == -1 && $1.distance! > 0) {
-                        return false
-                    } else if ($0.distance! > 0 && $1.distance! == -1) {
-                        return true
-                    }
-                    return $0.distance! < $1.distance!
-                }
                 self.isLoaded = true
             })
     }
@@ -113,14 +105,6 @@ class LikedPlacesListModel: ObservableObject {
                 }
             } catch {
                 log.info("Unable to Decode Places", context: error)
-            }
-            self.places.sort {
-                if ($0.distance! == -1 && $1.distance! > 0) {
-                    return false
-                } else if ($0.distance! > 0 && $1.distance! == -1) {
-                    return true
-                }
-                return $0.distance! < $1.distance!
             }
             self.isLoaded = true
         }

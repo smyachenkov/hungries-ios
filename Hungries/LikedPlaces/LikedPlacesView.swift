@@ -12,7 +12,14 @@ class LikedList: ObservableObject {
     @Published var data: [LocalizedPlace] = [LocalizedPlace]()
     
     init(data: [LocalizedPlace]) {
-        self.data = data
+        self.data = data.sorted {
+            if ($0.distance! == -1 && $1.distance! > 0) {
+                return false
+            } else if ($0.distance! > 0 && $1.distance! == -1) {
+                return true
+            }
+            return $0.distance! < $1.distance!
+        }
     }
     
     func deleteById(placeId: String) {
@@ -27,11 +34,11 @@ struct LikedPlacesView: View {
     @ObservedObject var places: LikedList
     
     var sendRemoveAction: (Place) -> Void
-        
+    
     @State var showRemoveDialog = false
     
     @State var lastClickedPlace: Place? = nil
-        
+    
     @Environment(\.colorScheme) var colorScheme
     
     init(places: [LocalizedPlace], sendRemoveAction: @escaping (Place) -> Void) {
@@ -42,9 +49,13 @@ struct LikedPlacesView: View {
     var body: some View {
         VStack {
             
-            Text("Liked Places")
-                .font(.title2)
-                .padding(.vertical, 10)
+            HStack {
+                Text("Liked Places")
+                    .font(.title2)
+                    .padding(.vertical, 10)
+                
+                // todo implement sort order button
+            }
             
             ScrollView(.vertical) {
                 //VStack(spacing: 10) {
@@ -60,9 +71,9 @@ struct LikedPlacesView: View {
                                     destination: URL(string: "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=" + localizedPlace.place.place_id!)!,
                                     label: {
                                         Text(localizedPlace.place.name!).underline()
-                                     })
+                                    })
                                 Spacer()
-                            
+                                
                                 Text("\(localizedPlace.distance!)m")
                             }
                             
